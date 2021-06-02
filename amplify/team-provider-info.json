@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-morelife-staging-62518-authRole",
+      "UnauthRoleArn": "arn:aws:iam::132260253285:role/amplify-morelife-staging-62518-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::132260253285:role/amplify-morelife-staging-62518-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-morelife-staging-62518-deployment",
+      "UnauthRoleName": "amplify-morelife-staging-62518-unauthRole",
+      "StackName": "amplify-morelife-staging-62518",
+      "StackId": "arn:aws:cloudformation:us-east-2:132260253285:stack/amplify-morelife-staging-62518/4d5d4fd0-c36b-11eb-9441-06942b403bc4",
+      "AmplifyAppId": "dleqin4ywwgk3"
+    },
+    "categories": {
+      "auth": {
+        "morelifea16a7956": {}
+      }
+    }
+  }
+}
