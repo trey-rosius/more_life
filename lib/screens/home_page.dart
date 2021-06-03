@@ -38,11 +38,19 @@ String userId;
 
     postProvider.queryPost().then((List<Post> posts) {
       print(posts.toString());
+      /*
+      postProvider.updateUser(posts[1]).then((_) {
+        print("updated");
+      });
+
+       */
     });
+
+
 
   postProvider.retrieveUser().then((User user) {
 
-    print(user.username);
+    print(user.Posts.toString());
   });
 
 

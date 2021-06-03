@@ -61,6 +61,13 @@ class PostRepository extends ChangeNotifier{
     await Amplify.DataStore.save(newPost);
   }
 
+
+  Future<void> updateUser(Post post) async{
+    User oldUser =  (await Amplify.DataStore.query(User.classType,
+        where: User.ID.eq("456090a5-e6a1-4a59-b945-a2d85ac2748f")))[0];
+    User newUser = oldUser.copyWith(id: oldUser.id,updatedOn: TemporalDateTime.now(),Posts: [post]);
+    await Amplify.DataStore.save(newUser);
+  }
   Future<User> retrieveUser() async{
     User user = (await Amplify.DataStore.query(User.classType, where: User.ID.eq('456090a5-e6a1-4a59-b945-a2d85ac2748f')))[0];
     return user;
