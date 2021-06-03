@@ -1,7 +1,10 @@
+import 'package:amp_auth/repository/profile_repository.dart';
+import 'package:amp_auth/screens/create_post.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 
 class FABBottomAppBarItem {
@@ -79,42 +82,56 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
   }
 
   Widget _buildMiddleTabItem() {
-    return Expanded(
-      child: SizedBox(
-        height: 100,
-        width: 100,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                height: 60,
-                width: 60,
+    return
+      Expanded(
+        child: InkWell(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return  FutureProvider(create:(context) => ProfileRepository.instance().getUserProfile(widget.userId),
+                catchError: (context,error){
+                print(error);
+                },
+                child: CreatePostScreen(),
+              );
+            }));
+          },
+          child: SizedBox(
+            height: 100,
+            width: 100,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                    height: 60,
+                    width: 60,
 
-              padding:EdgeInsets.all(20),
+                  padding:EdgeInsets.all(20),
 
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [ThemeColor.primary, ThemeColor.secondary],
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [ThemeColor.primary, ThemeColor.secondary],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+
+                    borderRadius: BorderRadius.all(Radius.circular(100.0)),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/svg/add.svg',
+
+                    height: 24,
+                    width: 24,
+                    fit: BoxFit.cover,
+                    color: Colors.white,
+
+                  ),
                 ),
 
-                borderRadius: BorderRadius.all(Radius.circular(100.0)),
-              ),
-              child: SvgPicture.asset(
-                'assets/svg/add.svg',
-
-                height: 24,
-                width: 24,
-                fit: BoxFit.cover,
-                color: Colors.white,
-
-              ),
+              ],
             ),
-
-          ],
+          ),
         ),
-      ),
+
     );
   }
 

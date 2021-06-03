@@ -186,11 +186,14 @@ class ProfileRepository extends ChangeNotifier {
 
   }
 
-Future<User>getUserProfile(String userId) async{
+Future<String>getUserProfile(String userId) async{
 
     List<User> user = await Amplify.DataStore.query(User.classType, where: User.ID.eq(userId));
     print(user[0]);
-    return user[0];
+    GetUrlResult resultDownload =
+    await Amplify.Storage.getUrl(key: user[0].profilePicUrl);
+    print(resultDownload.url);
+    return resultDownload.url;
 
 
 }

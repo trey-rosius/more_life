@@ -1,4 +1,5 @@
 import 'package:amp_auth/repository/profile_repository.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 class CreatePostScreen extends StatefulWidget {
@@ -14,11 +15,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    var profileRepo = context.read<ProfileRepository>();
-    profileRepo.getUserProfile(widget.userId);
+
   }
   @override
   Widget build(BuildContext context) {
+    var profilePicUrl= context.watch<String>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Create A Post'),
@@ -26,10 +27,38 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-
+            profilePicUrl != null ?ClipOval(
+                child: ClipRRect(
+                    borderRadius:
+                    new BorderRadius.circular(
+                        30),
+                    child: CachedNetworkImage(
+                        width: 40.0,
+                        height: 40.0,
+                        fit: BoxFit.cover,
+                        imageUrl: profilePicUrl,
+                        placeholder: (context,
+                            url) =>
+                            CircularProgressIndicator(),
+                        errorWidget: (context,
+                            url, ex) =>
+                            CircleAvatar(
+                              backgroundColor:
+                              Theme.of(
+                                  context)
+                                  .accentColor,
+                              radius: 20.0,
+                              child: Icon(
+                                Icons
+                                    .account_circle,
+                                color:
+                                Colors.white,
+                                size: 20.0,
+                              ),
+                            )))) : Container(),
           ],
         ),
       ),
-    )
+    );
   }
 }

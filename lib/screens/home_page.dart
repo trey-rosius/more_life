@@ -1,21 +1,13 @@
 
-import 'package:amp_auth/models/ModelProvider.dart';
+
 import 'package:amp_auth/repository/profile_repository.dart';
-import 'package:amp_auth/screens/edit_profile.dart';
-import 'package:amp_auth/screens/login_screen.dart';
 import 'package:amp_auth/screens/nav/fab_bottom_app_bar.dart';
-import 'package:amp_auth/screens/register_screen.dart';
+
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
-import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_datastore/amplify_datastore.dart';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../amplifyconfiguration.dart';
+import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -26,17 +18,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _counter = 0;
-  bool _amplifyConfigured = false;
-  // list of Todos
+String userId;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    var provider = context.read<ProfileRepository>();
+    provider.retrieveCurrentUser().then((AuthUser authUser) {
+      setState(() {
+        userId = authUser.userId;
+      });
+    });
 
 
-     _configureAmplify();
 
 
   }
@@ -45,6 +40,7 @@ class _HomePageState extends State<HomePage> {
   int _selectedTabIndex = 0;
 
   void _selectedTab(int index) {
+    print("Selected Index"+index.toString());
     if(index == 2)
     {
 
@@ -59,34 +55,6 @@ class _HomePageState extends State<HomePage> {
 
 
 
-
-  void _configureAmplify() async {
-
-    // Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line once backend is deployed
-    Amplify.addPlugins([
-      AmplifyDataStore(modelProvider: ModelProvider.instance,),
-      AmplifyAuthCognito(),
-      AmplifyAPI(),
-      AmplifyStorageS3()
-    ]);
-
-    try {
-      // Once Plugins are added, configure Amplify
-    await Amplify.configure(amplifyconfig);
-    setState(() {
-      _amplifyConfigured = true;
-    });
-    } on AmplifyAlreadyConfiguredException {
-      print(
-          "Amplify was already configured. Looks like app restarted on android.");
-
-      setState(() {
-        _amplifyConfigured = true;
-      });
-    }
-
-
-  }
 
 
 
@@ -114,7 +82,7 @@ class _HomePageState extends State<HomePage> {
         selectedColor: ThemeColor.primary,
 
         onTabSelected: _selectedTab,
-        userId: "khghjgkh",
+        userId: userId,
 
 
         items: [
@@ -148,7 +116,11 @@ class _HomePageState extends State<HomePage> {
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
 
+
        */
+
     );
+
+
   }
 }

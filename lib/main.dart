@@ -1,10 +1,14 @@
+import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/home_page.dart';
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
 import 'package:amplify_flutter/amplify.dart';
 // import 'package:amplify_api/amplify_api.dart'; // UNCOMMENT this line once backend is deployed
 import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:provider/provider.dart';
 
 // Generated in previous step
 import 'models/ModelProvider.dart';
@@ -13,29 +17,70 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  bool _amplifyConfigured = false;
+  void _configureAmplify() async {
+
+    // Amplify.addPlugin(AmplifyAPI()); // UNCOMMENT this line once backend is deployed
+    Amplify.addPlugins([
+      AmplifyDataStore(modelProvider: ModelProvider.instance,),
+      AmplifyAuthCognito(),
+      AmplifyAPI(),
+      AmplifyStorageS3()
+    ]);
+
+    try {
+      // Once Plugins are added, configure Amplify
+      await Amplify.configure(amplifyconfig);
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    } on AmplifyAlreadyConfiguredException {
+      print(
+          "Amplify was already configured. Looks like app restarted on android.");
+
+      setState(() {
+        _amplifyConfigured = true;
+      });
+    }
+
+
+  }
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _configureAmplify();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Social Media App',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primaryColor: Color(0xFF1c1c1c),
         accentColor: Color(0XFFf94c84),
 
 
 
       ),
-      home: HomePage(),
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => ProfileRepository.instance(),),
+
+        ],
+        child: HomePage(),
+
+      )
     );
   }
 }
