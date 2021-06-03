@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:amp_auth/models/ModelProvider.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +39,34 @@ class PostRepository extends ChangeNotifier{
 
   final postTextController = TextEditingController();
 
+  Future<void> createPost(String userId) async{
+    loading = true;
+    Post post = Post(content: postTextController.text.trim(), postType:PostTyp.IMAGE,postStatus: PostStatus.CREATED,userID: userId,postImageUrl: postImageKey,);
+    await Amplify.DataStore.save(post).then((_) => loading = false);
+  }
+  Future<List<Post>>queryPost() async{
+    List<Post> posts = await Amplify.DataStore.query(Post.classType);
+    return posts;
+  }
+
+  //d64cc89f-5a19-4311-b160-c159e9d59079
+
+  Future<void> updatePost(String postId) async{
+    Post oldPost = (await Amplify.DataStore.query(Post.classType,
+        where: Post.ID.eq(postId)))[0];
+    Post newPost = oldPost.copyWith(id: oldPost.id,
+    createdOn: TemporalDateTime.now(),
+     updatedOn: TemporalDateTime.now());
+
+    await Amplify.DataStore.save(newPost);
+  }
+
+  Future<User> retrieveUser() async{
+    User user = (await Amplify.DataStore.query(User.classType, where: User.ID.eq('456090a5-e6a1-4a59-b945-a2d85ac2748f')))[0];
+    return user;
+
+  }
+
   Future<Null> cropPostImage(String imageFilePath,
       BuildContext context, String targetPath) async {
     loading = true;
@@ -44,11 +74,12 @@ class PostRepository extends ChangeNotifier{
 
     File croppedFile = await ImageCropper.cropImage(
         sourcePath: imageFilePath,
-        cropStyle: CropStyle.circle,
+        cropStyle: CropStyle.rectangle,
         aspectRatioPresets: Platform.isAndroid
-            ? [CropAspectRatioPreset.square]
+            ? [CropAspectRatioPreset.square, CropAspectRatioPreset.ratio4x3,]
             : [
           CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio4x3,
         ],
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop Image',

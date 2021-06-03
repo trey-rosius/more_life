@@ -91,7 +91,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                 catchError: (context,error){
                 print(error);
                 },
-                child: CreatePostScreen(),
+                child: CreatePostScreen(userId: widget.userId,),
               );
             }));
           },

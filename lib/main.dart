@@ -1,3 +1,4 @@
+import 'package:amp_auth/repository/post_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/home_page.dart';
 import 'package:amplify_api/amplify_api.dart';
@@ -65,6 +66,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Social Media App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
 
         primaryColor: Color(0xFF1c1c1c),
@@ -76,6 +78,7 @@ class _MyAppState extends State<MyApp> {
       home: MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ProfileRepository.instance(),),
+          ChangeNotifierProvider(create: (_) => PostRepository.instance(),),
 
         ],
         child: HomePage(),

@@ -1,5 +1,8 @@
 
 
+import 'package:amp_auth/models/Post.dart';
+import 'package:amp_auth/models/User.dart';
+import 'package:amp_auth/repository/post_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/nav/fab_bottom_app_bar.dart';
 
@@ -31,6 +34,16 @@ String userId;
       });
     });
 
+    var postProvider = context.read<PostRepository>();
+
+    postProvider.queryPost().then((List<Post> posts) {
+      print(posts.toString());
+    });
+
+  postProvider.retrieveUser().then((User user) {
+
+    print(user.username);
+  });
 
 
 
