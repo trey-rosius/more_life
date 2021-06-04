@@ -25,12 +25,11 @@ import 'package:flutter/foundation.dart';
 class Chat extends Model {
   static const classType = const _ChatModelType();
   final String id;
-  final String lastMessage;
   final String receiverId;
   final String senderId;
   final TemporalDateTime createdOn;
   final TemporalDateTime updatedOn;
-  final List<ChatItem> ChatItems;
+  final List<ChatItem> chatItems;
   final List<UserChat> users;
 
   @override
@@ -43,31 +42,28 @@ class Chat extends Model {
 
   const Chat._internal(
       {@required this.id,
-      @required this.lastMessage,
       @required this.receiverId,
       @required this.senderId,
       this.createdOn,
       this.updatedOn,
-      this.ChatItems,
+      this.chatItems,
       this.users});
 
   factory Chat(
       {String id,
-      @required String lastMessage,
       @required String receiverId,
       @required String senderId,
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
-      List<ChatItem> ChatItems,
+      List<ChatItem> chatItems,
       List<UserChat> users}) {
     return Chat._internal(
         id: id == null ? UUID.getUUID() : id,
-        lastMessage: lastMessage,
         receiverId: receiverId,
         senderId: senderId,
         createdOn: createdOn,
         updatedOn: updatedOn,
-        ChatItems: ChatItems != null ? List.unmodifiable(ChatItems) : ChatItems,
+        chatItems: chatItems != null ? List.unmodifiable(chatItems) : chatItems,
         users: users != null ? List.unmodifiable(users) : users);
   }
 
@@ -80,12 +76,11 @@ class Chat extends Model {
     if (identical(other, this)) return true;
     return other is Chat &&
         id == other.id &&
-        lastMessage == other.lastMessage &&
         receiverId == other.receiverId &&
         senderId == other.senderId &&
         createdOn == other.createdOn &&
         updatedOn == other.updatedOn &&
-        DeepCollectionEquality().equals(ChatItems, other.ChatItems) &&
+        DeepCollectionEquality().equals(chatItems, other.chatItems) &&
         DeepCollectionEquality().equals(users, other.users);
   }
 
@@ -98,7 +93,6 @@ class Chat extends Model {
 
     buffer.write("Chat {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("lastMessage=" + "$lastMessage" + ", ");
     buffer.write("receiverId=" + "$receiverId" + ", ");
     buffer.write("senderId=" + "$senderId" + ", ");
     buffer.write("createdOn=" +
@@ -113,27 +107,24 @@ class Chat extends Model {
 
   Chat copyWith(
       {String id,
-      String lastMessage,
       String receiverId,
       String senderId,
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
-      List<ChatItem> ChatItems,
+      List<ChatItem> chatItems,
       List<UserChat> users}) {
     return Chat(
         id: id ?? this.id,
-        lastMessage: lastMessage ?? this.lastMessage,
         receiverId: receiverId ?? this.receiverId,
         senderId: senderId ?? this.senderId,
         createdOn: createdOn ?? this.createdOn,
         updatedOn: updatedOn ?? this.updatedOn,
-        ChatItems: ChatItems ?? this.ChatItems,
+        chatItems: chatItems ?? this.chatItems,
         users: users ?? this.users);
   }
 
   Chat.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        lastMessage = json['lastMessage'],
         receiverId = json['receiverId'],
         senderId = json['senderId'],
         createdOn = json['createdOn'] != null
@@ -142,8 +133,8 @@ class Chat extends Model {
         updatedOn = json['updatedOn'] != null
             ? TemporalDateTime.fromString(json['updatedOn'])
             : null,
-        ChatItems = json['ChatItems'] is List
-            ? (json['ChatItems'] as List)
+        chatItems = json['chatItems'] is List
+            ? (json['chatItems'] as List)
                 .map((e) => ChatItem.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
@@ -155,23 +146,21 @@ class Chat extends Model {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'lastMessage': lastMessage,
         'receiverId': receiverId,
         'senderId': senderId,
         'createdOn': createdOn?.format(),
         'updatedOn': updatedOn?.format(),
-        'ChatItems': ChatItems?.map((e) => e?.toJson())?.toList(),
+        'chatItems': chatItems?.map((e) => e?.toJson())?.toList(),
         'users': users?.map((e) => e?.toJson())?.toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "chat.id");
-  static final QueryField LASTMESSAGE = QueryField(fieldName: "lastMessage");
   static final QueryField RECEIVERID = QueryField(fieldName: "receiverId");
   static final QueryField SENDERID = QueryField(fieldName: "senderId");
   static final QueryField CREATEDON = QueryField(fieldName: "createdOn");
   static final QueryField UPDATEDON = QueryField(fieldName: "updatedOn");
   static final QueryField CHATITEMS = QueryField(
-      fieldName: "ChatItems",
+      fieldName: "chatItems",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (ChatItem).toString()));
   static final QueryField USERS = QueryField(
@@ -193,11 +182,6 @@ class Chat extends Model {
     ];
 
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Chat.LASTMESSAGE,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Chat.RECEIVERID,

@@ -181,14 +181,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ),
                 ),
                postRepo.postImageUrl != null ? Container(
-                 margin: EdgeInsets.only(left: 40),
+                 margin: EdgeInsets.only(left: 60),
                  child: ClipRRect(
                      borderRadius:
                      BorderRadius.circular(
                          10),
                      child: CachedNetworkImage(
                          width: SizeConfig.screenWidth,
-                         height: 300.0,
+                         height: 200.0,
                          fit: BoxFit.cover,
                          imageUrl: postRepo.postImageUrl,
                          placeholder: (context,

@@ -1,14 +1,14 @@
 
 
 import 'package:amp_auth/models/Post.dart';
-import 'package:amp_auth/models/User.dart';
-import 'package:amp_auth/repository/post_repository.dart';
+
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/nav/fab_bottom_app_bar.dart';
-
+import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 String userId;
-
+Stream<SubscriptionEvent<Post>> postStream;
   @override
   void initState() {
     // TODO: implement initState
@@ -33,28 +33,29 @@ String userId;
         userId = authUser.userId;
       });
     });
-
+    /*
     var postProvider = context.read<PostRepository>();
 
     postProvider.queryPost().then((List<Post> posts) {
       print(posts.toString());
-      /*
-      postProvider.updateUser(posts[1]).then((_) {
-        print("updated");
-      });
 
-       */
+    });
+*/
+    Stream<SubscriptionEvent<Post>> stream = Amplify.DataStore.observe(Post.classType);
+    stream.listen((event) {
+
+    print('Received event of type ' + event.eventType.toString());
+    print('Received post ' + event.item.toString());
     });
 
-
-
+/*
   postProvider.retrieveUser().then((User user) {
-
     print(user.Posts.toString());
   });
+*/
 
 
-
+    //Amplify.DataStore.clear();
   }
 
 

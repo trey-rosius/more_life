@@ -31,6 +31,7 @@ class ChatItem extends Model {
   final ChatItemTyp chatItemType;
   final String chatID;
   final TemporalTimestamp createdOn;
+  final Chat chat;
 
   @override
   getInstanceType() => classType;
@@ -47,8 +48,9 @@ class ChatItem extends Model {
       this.message,
       this.imageUrl,
       @required this.chatItemType,
-      @required this.chatID,
-      this.createdOn});
+      this.chatID,
+      this.createdOn,
+      this.chat});
 
   factory ChatItem(
       {String id,
@@ -57,8 +59,9 @@ class ChatItem extends Model {
       String message,
       String imageUrl,
       @required ChatItemTyp chatItemType,
-      @required String chatID,
-      TemporalTimestamp createdOn}) {
+      String chatID,
+      TemporalTimestamp createdOn,
+      Chat chat}) {
     return ChatItem._internal(
         id: id == null ? UUID.getUUID() : id,
         senderId: senderId,
@@ -67,7 +70,8 @@ class ChatItem extends Model {
         imageUrl: imageUrl,
         chatItemType: chatItemType,
         chatID: chatID,
-        createdOn: createdOn);
+        createdOn: createdOn,
+        chat: chat);
   }
 
   bool equals(Object other) {
@@ -85,7 +89,8 @@ class ChatItem extends Model {
         imageUrl == other.imageUrl &&
         chatItemType == other.chatItemType &&
         chatID == other.chatID &&
-        createdOn == other.createdOn;
+        createdOn == other.createdOn &&
+        chat == other.chat;
   }
 
   @override
@@ -105,8 +110,10 @@ class ChatItem extends Model {
         (chatItemType != null ? enumToString(chatItemType) : "null") +
         ", ");
     buffer.write("chatID=" + "$chatID" + ", ");
-    buffer.write(
-        "createdOn=" + (createdOn != null ? createdOn.toString() : "null"));
+    buffer.write("createdOn=" +
+        (createdOn != null ? createdOn.toString() : "null") +
+        ", ");
+    buffer.write("chat=" + (chat != null ? chat.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -120,7 +127,8 @@ class ChatItem extends Model {
       String imageUrl,
       ChatItemTyp chatItemType,
       String chatID,
-      TemporalTimestamp createdOn}) {
+      TemporalTimestamp createdOn,
+      Chat chat}) {
     return ChatItem(
         id: id ?? this.id,
         senderId: senderId ?? this.senderId,
@@ -129,7 +137,8 @@ class ChatItem extends Model {
         imageUrl: imageUrl ?? this.imageUrl,
         chatItemType: chatItemType ?? this.chatItemType,
         chatID: chatID ?? this.chatID,
-        createdOn: createdOn ?? this.createdOn);
+        createdOn: createdOn ?? this.createdOn,
+        chat: chat ?? this.chat);
   }
 
   ChatItem.fromJson(Map<String, dynamic> json)
@@ -143,6 +152,9 @@ class ChatItem extends Model {
         chatID = json['chatID'],
         createdOn = json['createdOn'] != null
             ? TemporalTimestamp.fromSeconds(json['createdOn'])
+            : null,
+        chat = json['chat'] != null
+            ? Chat.fromJson(new Map<String, dynamic>.from(json['chat']))
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -153,7 +165,8 @@ class ChatItem extends Model {
         'imageUrl': imageUrl,
         'chatItemType': enumToString(chatItemType),
         'chatID': chatID,
-        'createdOn': createdOn?.toSeconds()
+        'createdOn': createdOn?.toSeconds(),
+        'chat': chat?.toJson()
       };
 
   static final QueryField ID = QueryField(fieldName: "chatItem.id");
@@ -164,6 +177,10 @@ class ChatItem extends Model {
   static final QueryField CHATITEMTYPE = QueryField(fieldName: "chatItemType");
   static final QueryField CHATID = QueryField(fieldName: "chatID");
   static final QueryField CREATEDON = QueryField(fieldName: "createdOn");
+  static final QueryField CHAT = QueryField(
+      fieldName: "chat",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (Chat).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "ChatItem";
@@ -207,13 +224,19 @@ class ChatItem extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: ChatItem.CHATID,
-        isRequired: true,
+        isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: ChatItem.CREATEDON,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.timestamp)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: ChatItem.CHAT,
+        isRequired: false,
+        targetName: "chatItemChatId",
+        ofModelName: (Chat).toString()));
   });
 }
 

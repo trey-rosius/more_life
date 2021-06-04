@@ -15,6 +15,7 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'ModelProvider.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:flutter/foundation.dart';
 
@@ -28,6 +29,8 @@ class Comment extends Model {
   final TemporalDateTime updatedOn;
   final String userID;
   final String postID;
+  final Post post;
+  final User user;
 
   @override
   getInstanceType() => classType;
@@ -43,7 +46,9 @@ class Comment extends Model {
       this.createdOn,
       this.updatedOn,
       this.userID,
-      this.postID});
+      this.postID,
+      this.post,
+      this.user});
 
   factory Comment(
       {String id,
@@ -51,14 +56,18 @@ class Comment extends Model {
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
       String userID,
-      String postID}) {
+      String postID,
+      Post post,
+      User user}) {
     return Comment._internal(
         id: id == null ? UUID.getUUID() : id,
         commentText: commentText,
         createdOn: createdOn,
         updatedOn: updatedOn,
         userID: userID,
-        postID: postID);
+        postID: postID,
+        post: post,
+        user: user);
   }
 
   bool equals(Object other) {
@@ -74,7 +83,9 @@ class Comment extends Model {
         createdOn == other.createdOn &&
         updatedOn == other.updatedOn &&
         userID == other.userID &&
-        postID == other.postID;
+        postID == other.postID &&
+        post == other.post &&
+        user == other.user;
   }
 
   @override
@@ -94,7 +105,9 @@ class Comment extends Model {
         (updatedOn != null ? updatedOn.format() : "null") +
         ", ");
     buffer.write("userID=" + "$userID" + ", ");
-    buffer.write("postID=" + "$postID");
+    buffer.write("postID=" + "$postID" + ", ");
+    buffer.write("post=" + (post != null ? post.toString() : "null") + ", ");
+    buffer.write("user=" + (user != null ? user.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -106,14 +119,18 @@ class Comment extends Model {
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
       String userID,
-      String postID}) {
+      String postID,
+      Post post,
+      User user}) {
     return Comment(
         id: id ?? this.id,
         commentText: commentText ?? this.commentText,
         createdOn: createdOn ?? this.createdOn,
         updatedOn: updatedOn ?? this.updatedOn,
         userID: userID ?? this.userID,
-        postID: postID ?? this.postID);
+        postID: postID ?? this.postID,
+        post: post ?? this.post,
+        user: user ?? this.user);
   }
 
   Comment.fromJson(Map<String, dynamic> json)
@@ -126,7 +143,13 @@ class Comment extends Model {
             ? TemporalDateTime.fromString(json['updatedOn'])
             : null,
         userID = json['userID'],
-        postID = json['postID'];
+        postID = json['postID'],
+        post = json['post'] != null
+            ? Post.fromJson(new Map<String, dynamic>.from(json['post']))
+            : null,
+        user = json['user'] != null
+            ? User.fromJson(new Map<String, dynamic>.from(json['user']))
+            : null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -134,7 +157,9 @@ class Comment extends Model {
         'createdOn': createdOn?.format(),
         'updatedOn': updatedOn?.format(),
         'userID': userID,
-        'postID': postID
+        'postID': postID,
+        'post': post?.toJson(),
+        'user': user?.toJson()
       };
 
   static final QueryField ID = QueryField(fieldName: "comment.id");
@@ -143,6 +168,14 @@ class Comment extends Model {
   static final QueryField UPDATEDON = QueryField(fieldName: "updatedOn");
   static final QueryField USERID = QueryField(fieldName: "userID");
   static final QueryField POSTID = QueryField(fieldName: "postID");
+  static final QueryField POST = QueryField(
+      fieldName: "post",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (Post).toString()));
+  static final QueryField USER = QueryField(
+      fieldName: "user",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (User).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Comment";
@@ -183,6 +216,18 @@ class Comment extends Model {
         key: Comment.POSTID,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: Comment.POST,
+        isRequired: false,
+        targetName: "commentPostId",
+        ofModelName: (Post).toString()));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: Comment.USER,
+        isRequired: false,
+        targetName: "commentUserId",
+        ofModelName: (User).toString()));
   });
 }
 

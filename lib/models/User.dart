@@ -31,11 +31,11 @@ class User extends Model {
   final bool isVerified;
   final String profilePicUrl;
   final String email;
-  final List<Post> Posts;
-  final List<UserChat> UserChats;
+  final List<Post> post;
+  final List<UserChat> userChats;
   final TemporalDateTime createdOn;
   final TemporalDateTime updatedOn;
-  final List<Comment> Comments;
+  final List<Comment> comments;
 
   @override
   getInstanceType() => classType;
@@ -53,11 +53,11 @@ class User extends Model {
       @required this.isVerified,
       this.profilePicUrl,
       @required this.email,
-      this.Posts,
-      this.UserChats,
+      this.post,
+      this.userChats,
       this.createdOn,
       this.updatedOn,
-      this.Comments});
+      this.comments});
 
   factory User(
       {String id,
@@ -67,11 +67,11 @@ class User extends Model {
       @required bool isVerified,
       String profilePicUrl,
       @required String email,
-      List<Post> Posts,
-      List<UserChat> UserChats,
+      List<Post> post,
+      List<UserChat> userChats,
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
-      List<Comment> Comments}) {
+      List<Comment> comments}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
         username: username,
@@ -80,11 +80,11 @@ class User extends Model {
         isVerified: isVerified,
         profilePicUrl: profilePicUrl,
         email: email,
-        Posts: Posts != null ? List.unmodifiable(Posts) : Posts,
-        UserChats: UserChats != null ? List.unmodifiable(UserChats) : UserChats,
+        post: post != null ? List.unmodifiable(post) : post,
+        userChats: userChats != null ? List.unmodifiable(userChats) : userChats,
         createdOn: createdOn,
         updatedOn: updatedOn,
-        Comments: Comments != null ? List.unmodifiable(Comments) : Comments);
+        comments: comments != null ? List.unmodifiable(comments) : comments);
   }
 
   bool equals(Object other) {
@@ -102,11 +102,11 @@ class User extends Model {
         isVerified == other.isVerified &&
         profilePicUrl == other.profilePicUrl &&
         email == other.email &&
-        DeepCollectionEquality().equals(Posts, other.Posts) &&
-        DeepCollectionEquality().equals(UserChats, other.UserChats) &&
+        DeepCollectionEquality().equals(post, other.post) &&
+        DeepCollectionEquality().equals(userChats, other.userChats) &&
         createdOn == other.createdOn &&
         updatedOn == other.updatedOn &&
-        DeepCollectionEquality().equals(Comments, other.Comments);
+        DeepCollectionEquality().equals(comments, other.comments);
   }
 
   @override
@@ -144,11 +144,11 @@ class User extends Model {
       bool isVerified,
       String profilePicUrl,
       String email,
-      List<Post> Posts,
-      List<UserChat> UserChats,
+      List<Post> post,
+      List<UserChat> userChats,
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
-      List<Comment> Comments}) {
+      List<Comment> comments}) {
     return User(
         id: id ?? this.id,
         username: username ?? this.username,
@@ -157,11 +157,11 @@ class User extends Model {
         isVerified: isVerified ?? this.isVerified,
         profilePicUrl: profilePicUrl ?? this.profilePicUrl,
         email: email ?? this.email,
-        Posts: Posts ?? this.Posts,
-        UserChats: UserChats ?? this.UserChats,
+        post: post ?? this.post,
+        userChats: userChats ?? this.userChats,
         createdOn: createdOn ?? this.createdOn,
         updatedOn: updatedOn ?? this.updatedOn,
-        Comments: Comments ?? this.Comments);
+        comments: comments ?? this.comments);
   }
 
   User.fromJson(Map<String, dynamic> json)
@@ -172,13 +172,13 @@ class User extends Model {
         isVerified = json['isVerified'],
         profilePicUrl = json['profilePicUrl'],
         email = json['email'],
-        Posts = json['Posts'] is List
-            ? (json['Posts'] as List)
+        post = json['post'] is List
+            ? (json['post'] as List)
                 .map((e) => Post.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
-        UserChats = json['UserChats'] is List
-            ? (json['UserChats'] as List)
+        userChats = json['userChats'] is List
+            ? (json['userChats'] as List)
                 .map((e) => UserChat.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null,
@@ -188,8 +188,8 @@ class User extends Model {
         updatedOn = json['updatedOn'] != null
             ? TemporalDateTime.fromString(json['updatedOn'])
             : null,
-        Comments = json['Comments'] is List
-            ? (json['Comments'] as List)
+        comments = json['comments'] is List
+            ? (json['comments'] as List)
                 .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
             : null;
@@ -202,11 +202,11 @@ class User extends Model {
         'isVerified': isVerified,
         'profilePicUrl': profilePicUrl,
         'email': email,
-        'Posts': Posts?.map((e) => e?.toJson())?.toList(),
-        'UserChats': UserChats?.map((e) => e?.toJson())?.toList(),
+        'post': post?.map((e) => e?.toJson())?.toList(),
+        'userChats': userChats?.map((e) => e?.toJson())?.toList(),
         'createdOn': createdOn?.format(),
         'updatedOn': updatedOn?.format(),
-        'Comments': Comments?.map((e) => e?.toJson())?.toList()
+        'comments': comments?.map((e) => e?.toJson())?.toList()
       };
 
   static final QueryField ID = QueryField(fieldName: "user.id");
@@ -217,18 +217,18 @@ class User extends Model {
   static final QueryField PROFILEPICURL =
       QueryField(fieldName: "profilePicUrl");
   static final QueryField EMAIL = QueryField(fieldName: "email");
-  static final QueryField POSTS = QueryField(
-      fieldName: "Posts",
+  static final QueryField POST = QueryField(
+      fieldName: "post",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (Post).toString()));
   static final QueryField USERCHATS = QueryField(
-      fieldName: "UserChats",
+      fieldName: "userChats",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (UserChat).toString()));
   static final QueryField CREATEDON = QueryField(fieldName: "createdOn");
   static final QueryField UPDATEDON = QueryField(fieldName: "updatedOn");
   static final QueryField COMMENTS = QueryField(
-      fieldName: "Comments",
+      fieldName: "comments",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (Comment).toString()));
   static var schema =
@@ -278,7 +278,7 @@ class User extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.POSTS,
+        key: User.POST,
         isRequired: false,
         ofModelName: (Post).toString(),
         associatedKey: Post.USERID));

@@ -32,7 +32,8 @@ class Post extends Model {
   final String userID;
   final TemporalDateTime createdOn;
   final TemporalDateTime updatedOn;
-  final List<Comment> Comments;
+  final List<Comment> comments;
+  final User user;
 
   @override
   getInstanceType() => classType;
@@ -51,7 +52,8 @@ class Post extends Model {
       this.userID,
       this.createdOn,
       this.updatedOn,
-      this.Comments});
+      this.comments,
+      this.user});
 
   factory Post(
       {String id,
@@ -62,7 +64,8 @@ class Post extends Model {
       String userID,
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
-      List<Comment> Comments}) {
+      List<Comment> comments,
+      User user}) {
     return Post._internal(
         id: id == null ? UUID.getUUID() : id,
         content: content,
@@ -72,7 +75,8 @@ class Post extends Model {
         userID: userID,
         createdOn: createdOn,
         updatedOn: updatedOn,
-        Comments: Comments != null ? List.unmodifiable(Comments) : Comments);
+        comments: comments != null ? List.unmodifiable(comments) : comments,
+        user: user);
   }
 
   bool equals(Object other) {
@@ -91,7 +95,8 @@ class Post extends Model {
         userID == other.userID &&
         createdOn == other.createdOn &&
         updatedOn == other.updatedOn &&
-        DeepCollectionEquality().equals(Comments, other.Comments);
+        DeepCollectionEquality().equals(comments, other.comments) &&
+        user == other.user;
   }
 
   @override
@@ -115,8 +120,10 @@ class Post extends Model {
     buffer.write("createdOn=" +
         (createdOn != null ? createdOn.format() : "null") +
         ", ");
-    buffer.write(
-        "updatedOn=" + (updatedOn != null ? updatedOn.format() : "null"));
+    buffer.write("updatedOn=" +
+        (updatedOn != null ? updatedOn.format() : "null") +
+        ", ");
+    buffer.write("user=" + (user != null ? user.toString() : "null"));
     buffer.write("}");
 
     return buffer.toString();
@@ -131,7 +138,8 @@ class Post extends Model {
       String userID,
       TemporalDateTime createdOn,
       TemporalDateTime updatedOn,
-      List<Comment> Comments}) {
+      List<Comment> comments,
+      User user}) {
     return Post(
         id: id ?? this.id,
         content: content ?? this.content,
@@ -141,7 +149,8 @@ class Post extends Model {
         userID: userID ?? this.userID,
         createdOn: createdOn ?? this.createdOn,
         updatedOn: updatedOn ?? this.updatedOn,
-        Comments: Comments ?? this.Comments);
+        comments: comments ?? this.comments,
+        user: user ?? this.user);
   }
 
   Post.fromJson(Map<String, dynamic> json)
@@ -158,10 +167,13 @@ class Post extends Model {
         updatedOn = json['updatedOn'] != null
             ? TemporalDateTime.fromString(json['updatedOn'])
             : null,
-        Comments = json['Comments'] is List
-            ? (json['Comments'] as List)
+        comments = json['comments'] is List
+            ? (json['comments'] as List)
                 .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e)))
                 .toList()
+            : null,
+        user = json['user'] != null
+            ? User.fromJson(new Map<String, dynamic>.from(json['user']))
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -173,7 +185,8 @@ class Post extends Model {
         'userID': userID,
         'createdOn': createdOn?.format(),
         'updatedOn': updatedOn?.format(),
-        'Comments': Comments?.map((e) => e?.toJson())?.toList()
+        'comments': comments?.map((e) => e?.toJson())?.toList(),
+        'user': user?.toJson()
       };
 
   static final QueryField ID = QueryField(fieldName: "post.id");
@@ -185,9 +198,13 @@ class Post extends Model {
   static final QueryField CREATEDON = QueryField(fieldName: "createdOn");
   static final QueryField UPDATEDON = QueryField(fieldName: "updatedOn");
   static final QueryField COMMENTS = QueryField(
-      fieldName: "Comments",
+      fieldName: "comments",
       fieldType: ModelFieldType(ModelFieldTypeEnum.model,
           ofModelName: (Comment).toString()));
+  static final QueryField USER = QueryField(
+      fieldName: "user",
+      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
+          ofModelName: (User).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Post";
@@ -244,6 +261,12 @@ class Post extends Model {
         isRequired: false,
         ofModelName: (Comment).toString(),
         associatedKey: Comment.POSTID));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.belongsTo(
+        key: Post.USER,
+        isRequired: false,
+        targetName: "postUserId",
+        ofModelName: (User).toString()));
   });
 }
 
