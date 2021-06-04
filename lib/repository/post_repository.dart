@@ -60,7 +60,7 @@ class PostRepository extends ChangeNotifier{
           postType: PostTyp.IMAGE,
           postStatus: PostStatus.CREATED,
           userID: userId,
-          postImageUrl: postImageKey,
+          postImageUrl: postImageUrl,
           user: user[0],
           //user model
           createdOn: TemporalDateTime.now(),

@@ -5,6 +5,8 @@ import 'package:amp_auth/repository/post_repository.dart';
 
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/nav/fab_bottom_app_bar.dart';
+import 'package:amp_auth/screens/post_item.dart';
+import 'package:amp_auth/screens/profile_screen.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
@@ -101,13 +103,20 @@ Stream<SubscriptionEvent<Post>> postStream;
 
         title: Text("Home Page"),
       ),
-      body: ListView.separated(
-        separatorBuilder: (context,index){
-          return Divider();
-        },
-        itemBuilder: (context,index){
-        return Text(postRepo.posts[index].content,style: TextStyle(color: Colors.white),);
-      },itemCount: postRepo.posts.length,),
+      body:   IndexedStack(
+      index:_selectedTabIndex ,
+      children: [
+        ListView.builder(
+
+          itemBuilder: (context,index){
+            return PostItem(userId,postRepo.posts[index]);
+          },itemCount: postRepo.posts.length,),
+        ProfileScreen(userId),
+        ProfileScreen(userId),
+        ProfileScreen(userId),
+      ],),
+
+
       bottomNavigationBar: FABBottomAppBar(
         centerItemText: 'SellUp',
         color: Colors.grey,

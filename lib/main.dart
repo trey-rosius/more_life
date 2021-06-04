@@ -71,6 +71,7 @@ class _MyAppState extends State<MyApp> {
 
         primaryColor: Color(0xFF1c1c1c),
         accentColor: Color(0XFFf94c84),
+        fontFamily: 'Montserrat'
 
 
 
