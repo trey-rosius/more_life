@@ -1,6 +1,7 @@
 
 
 import 'package:amp_auth/models/Post.dart';
+import 'package:amp_auth/repository/post_repository.dart';
 
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/nav/fab_bottom_app_bar.dart';
@@ -23,6 +24,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 String userId;
 Stream<SubscriptionEvent<Post>> postStream;
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -33,29 +36,29 @@ Stream<SubscriptionEvent<Post>> postStream;
         userId = authUser.userId;
       });
     });
-    /*
+
     var postProvider = context.read<PostRepository>();
 
-    postProvider.queryPost().then((List<Post> posts) {
+    postProvider.queryAllPosts().then((List<Post> posts) {
+      print("this is a post list");
       print(posts.toString());
-
+      postProvider.posts = posts;
     });
-*/
-    Stream<SubscriptionEvent<Post>> stream = Amplify.DataStore.observe(Post.classType);
-    stream.listen((event) {
 
+   postStream = Amplify.DataStore.observe(Post.classType);
+    postStream.listen((event) {
+
+
+    postProvider.posts.insert(0, event.item);
     print('Received event of type ' + event.eventType.toString());
     print('Received post ' + event.item.toString());
+
     });
 
-/*
-  postProvider.retrieveUser().then((User user) {
-    print(user.Posts.toString());
-  });
-*/
 
 
-    //Amplify.DataStore.clear();
+
+   // Amplify.DataStore.clear();
   }
 
 
@@ -91,13 +94,20 @@ Stream<SubscriptionEvent<Post>> postStream;
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    var postRepo = context.watch<PostRepository>();
     return Scaffold(
       backgroundColor: ThemeColor.black,
       appBar: AppBar(
 
         title: Text("Home Page"),
       ),
-      body:  Text('No blogs have been added yet'),
+      body: ListView.separated(
+        separatorBuilder: (context,index){
+          return Divider();
+        },
+        itemBuilder: (context,index){
+        return Text(postRepo.posts[index].content,style: TextStyle(color: Colors.white),);
+      },itemCount: postRepo.posts.length,),
       bottomNavigationBar: FABBottomAppBar(
         centerItemText: 'SellUp',
         color: Colors.grey,

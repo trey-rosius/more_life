@@ -54,21 +54,26 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         source: source,
       );
 
-      var dir = await path_provider.getTemporaryDirectory();
-      var targetPath = dir.absolute.path + "/temp.jpg";
-      setState(() {
-        _imageFile = pickedFile;
-      });
+   if(pickedFile == null){
+     postRepository.loading = false;
+   }else{
+     var dir = await path_provider.getTemporaryDirectory();
+     var targetPath = dir.absolute.path + "/temp.jpg";
 
-      await postRepository.cropPostImage(
-          _imageFile.path, context, targetPath);
+
+     await postRepository.cropPostImage(
+         pickedFile.path, context, targetPath);
+   }
 
     } catch (e) {
-       postRepository.loading = false;
+
 
       setState(() {
+        //postRepository.loading = false;
         _pickImageError = e;
+
       });
+      print("this is the error "+_pickImageError.toString());
     }
   }
 
@@ -193,7 +198,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                          imageUrl: postRepo.postImageUrl,
                          placeholder: (context,
                              url) =>
-                             CircularProgressIndicator(),
+                             Container(
+                               height: 40,
+                               width: 40,
+                               child: CircularProgressIndicator(),
+                             ),
                          errorWidget: (context,
                              url, ex) =>
                              Container(child: Icon(Icons.error,color: ThemeColor.secondary,),))),
@@ -222,10 +231,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
 
                     onPressed: () {
                       if (postRepo.postTextController.text.trim().length > 0) {
-                        postRepo.createPost(widget.userId).then((_){
+                        postRepo.createPost(widget.userId).then((bool complete){
+                           if(complete){
+                             Navigator.of(context).pop();
+                           }else{
+                             print("an error occured");
+                           }
 
 
-                           Navigator.of(context).pop();
 
 
                         });

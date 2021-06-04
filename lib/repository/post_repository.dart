@@ -18,7 +18,15 @@ class PostRepository extends ChangeNotifier{
   bool get loading => _loading;
   String _postImageKey;
   String _postImageUrl;
+  List<Post> _posts = [];
 
+
+  List<Post> get posts => _posts;
+
+  set posts(List<Post> value) {
+    _posts = value;
+    notifyListeners();
+  }
 
   String get postImageKey => _postImageKey;
 
@@ -39,13 +47,40 @@ class PostRepository extends ChangeNotifier{
 
   final postTextController = TextEditingController();
 
-  Future<void> createPost(String userId) async{
+  Future<bool> createPost(String userId) async{
     loading = true;
-    Post post = Post(content: postTextController.text.trim(), postType:PostTyp.IMAGE,postStatus: PostStatus.CREATED,userID: userId,postImageUrl: postImageKey,);
-    await Amplify.DataStore.save(post).then((_) => loading = false);
+    /**
+     * first retrieve user model
+     */
+    try {
+      List<User> user = await Amplify.DataStore.query(
+          User.classType, where: User.ID.eq(userId));
+      print("user details" + user[0].toString());
+      Post post = Post(content: postTextController.text.trim(),
+          postType: PostTyp.IMAGE,
+          postStatus: PostStatus.CREATED,
+          userID: userId,
+          postImageUrl: postImageKey,
+          user: user[0],
+          //user model
+          createdOn: TemporalDateTime.now(),
+          updatedOn: TemporalDateTime.now());
+      await Amplify.DataStore.save(post);
+      loading = false;
+      return true;
+    }catch(ex){
+      print(ex.toString());
+      loading = false;
+      return false;
+    }
   }
   Future<List<Post>>queryPost() async{
     List<Post> posts = await Amplify.DataStore.query(Post.classType);
+    return posts;
+  }
+
+  Future<List<Post>>queryAllPosts() async{
+    List<Post> posts = await Amplify.DataStore.query(Post.classType,sortBy: [Post.CREATEDON.descending()]);
     return posts;
   }
 
@@ -101,7 +136,7 @@ class PostRepository extends ChangeNotifier{
         ));
     if (croppedFile != null) {
       print("cropped file is" + croppedFile.path);
-      loading = false;
+
 
 
       Map<String, String> metadata = <String, String>{};
@@ -136,6 +171,8 @@ class PostRepository extends ChangeNotifier{
         loading= false;
       }
 
+    }else{
+      loading = false;
     }
   }
 
