@@ -190,6 +190,9 @@ Future<User>getUserProfile(String userId) async{
 
     List<User> user = await Amplify.DataStore.query(User.classType, where: User.ID.eq(userId));
     print(user[0]);
+    firstNamesController.text = user[0].firstName;
+    lastNamesController.text = user[0].lastName;
+
 
     return user[0];
 

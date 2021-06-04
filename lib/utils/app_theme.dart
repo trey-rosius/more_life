@@ -19,5 +19,6 @@ class ThemeColor {
   static const Color greyColor = Color(0xFF161616);
   static const Color chatBoxOther = Color(0xFF3d3d3f);
   static const Color secondary = Color(0xFFf94c84);
+  static const Color cardBackground = Color(0xFF434343);
 
 }
