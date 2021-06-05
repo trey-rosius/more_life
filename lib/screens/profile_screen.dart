@@ -1,6 +1,9 @@
+import 'package:amp_auth/models/Post.dart';
 import 'package:amp_auth/models/User.dart';
+import 'package:amp_auth/repository/post_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/edit_profile_screen.dart';
+import 'package:amp_auth/screens/user_post_item.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -18,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    var postRepo = context.watch<PostRepository>();
     return Scaffold(
       backgroundColor: ThemeColor.black,
       body: CustomScrollView(
@@ -234,7 +238,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 )
               ],
             ),
-          )
+          ),
+          FutureProvider.value(value: postRepo.queryAllUserPosts(widget.userId),
+
+          catchError: (context,error){
+            print(error.toString());
+          },child: Consumer(builder: (_,List<Post> postsList,child){
+            if(postsList == null){
+              return SliverToBoxAdapter(
+                child: CircularProgressIndicator(),
+
+              );
+            }else {
+              if (postsList.isNotEmpty) {
+                return SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      return UserPostItem(widget.userId, postsList[index]);
+                    }, childCount: postsList.length));
+              } else {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text("No Posts Available"),),);
+              }
+            }
+            },),)
         ],
       ),
     );

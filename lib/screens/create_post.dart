@@ -1,3 +1,4 @@
+import 'package:amp_auth/models/User.dart';
 import 'package:amp_auth/repository/post_repository.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -85,7 +86,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    var profilePicUrl= context.watch<String>();
+    User user = context.watch<User>();
     return ChangeNotifierProvider(create: (_)=>PostRepository.instance(),
     child: Consumer(builder: (_,PostRepository postRepo,child){
       return Scaffold(
@@ -113,7 +114,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      profilePicUrl != null ?Flexible(
+                      user.profilePicUrl != null ?Flexible(
                         flex: 1,
                         child: Container(
 
@@ -130,7 +131,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   width: 40.0,
                                   height: 40.0,
                                   fit: BoxFit.cover,
-                                  imageUrl: profilePicUrl,
+                                  imageUrl: user.profilePicUrl,
                                   placeholder: (context,
                                       url) =>
                                       CircularProgressIndicator(),

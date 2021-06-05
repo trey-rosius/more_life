@@ -83,6 +83,12 @@ class PostRepository extends ChangeNotifier{
     List<Post> posts = await Amplify.DataStore.query(Post.classType,sortBy: [Post.CREATEDON.descending()]);
     return posts;
   }
+  Future<List<Post>>queryAllUserPosts(String userId) async{
+    List<Post> posts = await Amplify.DataStore.query(Post.classType,
+        where: Post.USERID.eq(userId),
+        sortBy: [Post.CREATEDON.descending()]);
+    return posts;
+  }
 
   //d64cc89f-5a19-4311-b160-c159e9d59079
 

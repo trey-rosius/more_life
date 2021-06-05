@@ -33,13 +33,14 @@ Stream<SubscriptionEvent<Post>> postStream;
     // TODO: implement initState
     super.initState();
     var provider = context.read<ProfileRepository>();
+    var postProvider = context.read<PostRepository>();
     provider.retrieveCurrentUser().then((AuthUser authUser) {
       setState(() {
         userId = authUser.userId;
       });
     });
 
-    var postProvider = context.read<PostRepository>();
+
 
     postProvider.queryAllPosts().then((List<Post> posts) {
       print("this is a post list");
@@ -107,6 +108,7 @@ Stream<SubscriptionEvent<Post>> postStream;
       index:_selectedTabIndex ,
       children: [
         ListView.builder(
+
 
           itemBuilder: (context,index){
             return PostItem(userId,postRepo.posts[index]);
