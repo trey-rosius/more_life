@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:amp_auth/models/Comment.dart';
+import 'package:amp_auth/models/Post.dart';
 import 'package:amp_auth/models/User.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
@@ -86,17 +87,17 @@ class CommentsRepository extends ChangeNotifier {
 
     super.dispose();
   }
-/*where: Comment.POSTID.eq(postId),
-        sortBy: [Comment.CREATEDON.descending()]
 
- */
   Future<List<Comment>>queryAllCommentsForPost(String postId) async{
-    List<Comment> comments= await Amplify.DataStore.query(Comment.classType);
+    List<Comment> comments= await Amplify.DataStore.query(Comment.classType,
+        where: Comment.POSTID.eq(postId),
+        sortBy: [Comment.CREATEDON.descending()]);
+
     print("comments are "+comments.toString());
     return comments;
   }
 
-  Future<bool> createComment(String userId,String postId) async{
+  Future<bool> createComment(String userId,Post post) async{
     loading = true;
     /**
      * first retrieve user model
@@ -105,7 +106,7 @@ class CommentsRepository extends ChangeNotifier {
 
 
       Comment comment = Comment(commentText: commentController.text.trim(),userId: userId,
-          postID:postId,createdOn: TemporalDateTime.now(),  updatedOn: TemporalDateTime.now());
+          postID:post.id,post: post,createdOn: TemporalDateTime.now(),  updatedOn: TemporalDateTime.now());
 
       await Amplify.DataStore.save(comment);
       loading = false;

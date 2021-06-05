@@ -1,3 +1,4 @@
+import 'package:amp_auth/repository/comments_repository.dart';
 import 'package:amp_auth/repository/post_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/home_page.dart';
@@ -80,6 +81,7 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(create: (_) => ProfileRepository.instance(),),
           ChangeNotifierProvider(create: (_) => PostRepository.instance(),),
+          ChangeNotifierProvider(create: (_) => CommentsRepository.instance(),),
 
         ],
         child: HomePage(),

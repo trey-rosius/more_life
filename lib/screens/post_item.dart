@@ -1,5 +1,6 @@
 import 'package:amp_auth/models/Post.dart';
 import 'package:amp_auth/models/User.dart';
+import 'package:amp_auth/repository/comments_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/comments/comments_screen.dart';
 import 'package:amp_auth/utils/app_theme.dart';
@@ -143,7 +144,8 @@ class PostItem extends StatelessWidget {
                     InkWell(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return CommentsScreen(userId: userId,post: post,);
+                          return ChangeNotifierProvider(create: (_) => CommentsRepository.instance(),
+                          child: CommentsScreen(userId: userId,post: post,));
                         }));
                       },
                       child: Container(
