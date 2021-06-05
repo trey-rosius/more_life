@@ -1,3 +1,4 @@
+import 'package:amp_auth/screens/create_profile_screen.dart';
 import 'package:amp_auth/screens/edit_profile_screen.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
@@ -28,7 +29,7 @@ class _OtpScreenState extends State<OtpScreen> {
       if(isSignUpComplete){
         print("Sign up is complete");
         Navigator.push(context, MaterialPageRoute(builder: (context){
-          return EditProfileScreen();
+          return CreateProfileScreen();
         }));
       }
     } on AuthException catch (e) {

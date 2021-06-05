@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:amp_auth/repository/login_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
+import 'package:amp_auth/screens/create_profile_screen.dart';
 import 'package:amp_auth/screens/edit_profile_screen.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -29,9 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
      hubSubscription = Amplify.Hub.listen([HubChannel.Auth], (hubEvent) {
       switch(hubEvent.eventName) {
         case "SIGNED_IN": {
-          Navigator.push(context, MaterialPageRoute(builder: (ctx){
-            return EditProfileScreen();
-          }));
+
           print("USER IS SIGNED IN");
         }
         break;
@@ -220,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         Navigator.push(context, MaterialPageRoute(builder: (context){
                                           return ChangeNotifierProvider(create: (_)=>ProfileRepository.instance(),
 
-                                           child: EditProfileScreen());
+                                           child: CreateProfileScreen());
                                         }));
 
 

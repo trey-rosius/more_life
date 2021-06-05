@@ -18,8 +18,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class EditProfileScreen extends StatefulWidget {
-EditProfileScreen({this.email});
-final String email;
+EditProfileScreen(this.userId);
+final String userId;
 
 
   @override
@@ -184,14 +184,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     var profileRepo = context.read<ProfileRepository>();
 
-    profileRepo.retrieveEmail().then((String email) => profileRepo.email = email);
-    profileRepo.retrieveCurrentUser().then((AuthUser authUser) {
-      print(authUser.username);
-      print(authUser.userId);
-      profileRepo.userId = authUser.userId;
-      profileRepo.username = authUser.username;
-    });
-
+    profileRepo.getUserProfile(widget.userId);
 
   }
 
@@ -467,9 +460,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 
 
-                                profileRepo.saveUserProfileDetails().then((_){
+                                profileRepo.updateUserProfileDetails(widget.userId).then((_){
 
-                                  print("save to database");
+                                  print("updated to database");
+                                  Navigator.of(context).pop();
 
                                 });
 

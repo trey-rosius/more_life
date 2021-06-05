@@ -181,7 +181,17 @@ class ProfileRepository extends ChangeNotifier {
     await Amplify.DataStore.save(newUser).then((_) => loading = false);
 
 
+  }
+  /// save user details to profile
+  ///
+  Future<void>updateUserProfileDetails(String userId) async{
+    loading = true;
+    List<User> user = await Amplify.DataStore.query(User.classType, where: User.ID.eq(userId));
 
+    User newUser = user[0].copyWith(id: user[0].id,firstName: firstNamesController.text.trim(),lastName: lastNamesController.text.trim(),
+      profilePicUrl: profilePic,updatedOn: TemporalDateTime.now());
+
+    await Amplify.DataStore.save(newUser).then((_) => loading = false);
 
 
   }
@@ -190,6 +200,7 @@ Future<User>getUserProfile(String userId) async{
 
     List<User> user = await Amplify.DataStore.query(User.classType, where: User.ID.eq(userId));
     print(user[0]);
+
     firstNamesController.text = user[0].firstName;
     lastNamesController.text = user[0].lastName;
 

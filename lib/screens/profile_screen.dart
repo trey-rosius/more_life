@@ -35,22 +35,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     children: [
                       Container(
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.all(10),
+
+                       margin:EdgeInsets.only(top: 50),
                         decoration: BoxDecoration(
                             border: Border.all(width: 2,color: ThemeColor.secondary),
-                            borderRadius: BorderRadius.circular(50)
+                            borderRadius: BorderRadius.circular(40)
                         ),
-                        child: ClipOval(
-                            child: ClipRRect(
+                        child: ClipRRect(
                               borderRadius:
                               BorderRadius.circular(
-                                  10),
+                                  40),
                               child:  CachedNetworkImage(
                                   width: 120.0,
                                   height: 120.0,
                                   fit: BoxFit.cover,
-                                  imageUrl: "",
+                                  imageUrl: user.profilePicUrl,
                                   placeholder: (context,
                                       url) =>
                                       CircularProgressIndicator(),
@@ -74,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       )),
                             )),
-                      ),
+
                       Container(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -126,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             //return LoginScreen();
 
                             return ChangeNotifierProvider(create: (_)=>ProfileRepository.instance(),
-                              child: EditProfileScreen(),);
+                              child: EditProfileScreen(widget.userId),);
 
 
                           }));
