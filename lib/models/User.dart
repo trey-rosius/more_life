@@ -35,7 +35,6 @@ class User extends Model {
   final List<UserChat> userChats;
   final TemporalDateTime createdOn;
   final TemporalDateTime updatedOn;
-  final List<Comment> comments;
 
   @override
   getInstanceType() => classType;
@@ -56,8 +55,7 @@ class User extends Model {
       this.post,
       this.userChats,
       this.createdOn,
-      this.updatedOn,
-      this.comments});
+      this.updatedOn});
 
   factory User(
       {String id,
@@ -70,8 +68,7 @@ class User extends Model {
       List<Post> post,
       List<UserChat> userChats,
       TemporalDateTime createdOn,
-      TemporalDateTime updatedOn,
-      List<Comment> comments}) {
+      TemporalDateTime updatedOn}) {
     return User._internal(
         id: id == null ? UUID.getUUID() : id,
         username: username,
@@ -83,8 +80,7 @@ class User extends Model {
         post: post != null ? List.unmodifiable(post) : post,
         userChats: userChats != null ? List.unmodifiable(userChats) : userChats,
         createdOn: createdOn,
-        updatedOn: updatedOn,
-        comments: comments != null ? List.unmodifiable(comments) : comments);
+        updatedOn: updatedOn);
   }
 
   bool equals(Object other) {
@@ -105,8 +101,7 @@ class User extends Model {
         DeepCollectionEquality().equals(post, other.post) &&
         DeepCollectionEquality().equals(userChats, other.userChats) &&
         createdOn == other.createdOn &&
-        updatedOn == other.updatedOn &&
-        DeepCollectionEquality().equals(comments, other.comments);
+        updatedOn == other.updatedOn;
   }
 
   @override
@@ -147,8 +142,7 @@ class User extends Model {
       List<Post> post,
       List<UserChat> userChats,
       TemporalDateTime createdOn,
-      TemporalDateTime updatedOn,
-      List<Comment> comments}) {
+      TemporalDateTime updatedOn}) {
     return User(
         id: id ?? this.id,
         username: username ?? this.username,
@@ -160,8 +154,7 @@ class User extends Model {
         post: post ?? this.post,
         userChats: userChats ?? this.userChats,
         createdOn: createdOn ?? this.createdOn,
-        updatedOn: updatedOn ?? this.updatedOn,
-        comments: comments ?? this.comments);
+        updatedOn: updatedOn ?? this.updatedOn);
   }
 
   User.fromJson(Map<String, dynamic> json)
@@ -187,11 +180,6 @@ class User extends Model {
             : null,
         updatedOn = json['updatedOn'] != null
             ? TemporalDateTime.fromString(json['updatedOn'])
-            : null,
-        comments = json['comments'] is List
-            ? (json['comments'] as List)
-                .map((e) => Comment.fromJson(new Map<String, dynamic>.from(e)))
-                .toList()
             : null;
 
   Map<String, dynamic> toJson() => {
@@ -205,8 +193,7 @@ class User extends Model {
         'post': post?.map((e) => e?.toJson())?.toList(),
         'userChats': userChats?.map((e) => e?.toJson())?.toList(),
         'createdOn': createdOn?.format(),
-        'updatedOn': updatedOn?.format(),
-        'comments': comments?.map((e) => e?.toJson())?.toList()
+        'updatedOn': updatedOn?.format()
       };
 
   static final QueryField ID = QueryField(fieldName: "user.id");
@@ -227,10 +214,6 @@ class User extends Model {
           ofModelName: (UserChat).toString()));
   static final QueryField CREATEDON = QueryField(fieldName: "createdOn");
   static final QueryField UPDATEDON = QueryField(fieldName: "updatedOn");
-  static final QueryField COMMENTS = QueryField(
-      fieldName: "comments",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (Comment).toString()));
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "User";
@@ -298,12 +281,6 @@ class User extends Model {
         key: User.UPDATEDON,
         isRequired: false,
         ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
-
-    modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: User.COMMENTS,
-        isRequired: false,
-        ofModelName: (Comment).toString(),
-        associatedKey: Comment.USERID));
   });
 }
 

@@ -1,12 +1,11 @@
-type Comment @model @auth(rules: [{allow: public}]) @key(name: "byUser", fields: ["userID"]) @key(name: "byPost", fields: ["postID"]) {
+type Comment @model @auth(rules: [{allow: public}]) @key(name: "byPost", fields: ["postID"]) {
   id: ID!
   commentText: String!
   createdOn: AWSDateTime
   updatedOn: AWSDateTime
-  userID: ID
   postID: ID
   post: Post @connection
-  user: User @connection
+  userId: String
 }
 
 enum ChatItemTyp {
@@ -72,7 +71,6 @@ type User @model @auth(rules: [{allow: public}]) {
   userChats: [UserChat] @connection(keyName: "byUser", fields: ["id"])
   createdOn: AWSDateTime
   updatedOn: AWSDateTime
-  comments: [Comment] @connection(keyName: "byUser", fields: ["id"])
 }
 
 type UserChat @model(queries: null) @key(name: "byUser", fields: ["userID", "chatID"]) @key(name: "byChat", fields: ["chatID", "userID"]) @auth(rules: [{allow: public}, {allow: public}]) {

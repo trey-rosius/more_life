@@ -1,6 +1,6 @@
 {
     "identityPoolName": "morelifea16a7956_identitypool_a16a7956",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "morelia16a7956",
     "userPoolName": "morelifea16a7956_userpool_a16a7956",
     "autoVerifiedAttributes": [

@@ -1,10 +1,10 @@
 import 'package:amp_auth/models/Post.dart';
 import 'package:amp_auth/models/User.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
+import 'package:amp_auth/screens/comments/comments_screen.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
-import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -140,32 +140,39 @@ class PostItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Container(
-                      padding:EdgeInsets.all(15),
-                      margin: EdgeInsets.all(10),
-                      width: SizeConfig.screenWidth/2.5,
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return CommentsScreen(userId: userId,post: post,);
+                        }));
+                      },
+                      child: Container(
+                        padding:EdgeInsets.all(15),
+                        margin: EdgeInsets.all(10),
+                        width: SizeConfig.screenWidth/2.5,
 
-                 
-                      decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10)
-                      ),
-                     
-                      child: Row(
 
-                        children: [
-                          SvgPicture.asset(
-                            'assets/svg/chats.svg',
-                            fit: BoxFit.cover,
-                            height: 20,
-                            width: 20,
-                            color: Colors.white,
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10)
+                        ),
 
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text("Comments",style: TextStyle(color: Colors.white),),)
-                        ],
+                        child: Row(
+
+                          children: [
+                            SvgPicture.asset(
+                              'assets/svg/chats.svg',
+                              fit: BoxFit.cover,
+                              height: 20,
+                              width: 20,
+                              color: Colors.white,
+
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text("Comments",style: TextStyle(color: Colors.white),),)
+                          ],
+                        ),
                       ),
                     ),
                   ],
