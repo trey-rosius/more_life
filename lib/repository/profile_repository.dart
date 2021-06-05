@@ -126,7 +126,7 @@ class ProfileRepository extends ChangeNotifier {
         ));
     if (croppedFile != null) {
       print("cropped file is" + croppedFile.path);
-      loading = false;
+
 
 
       Map<String, String> metadata = <String, String>{};
@@ -153,6 +153,8 @@ class ProfileRepository extends ChangeNotifier {
        loading= false;
       }
 
+    }else{
+      loading = false;
     }
   }
 
@@ -203,6 +205,7 @@ Future<User>getUserProfile(String userId) async{
 
     firstNamesController.text = user[0].firstName;
     lastNamesController.text = user[0].lastName;
+    profilePic =user[0].profilePicUrl;
 
 
     return user[0];

@@ -158,15 +158,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
       var dir = await path_provider.getTemporaryDirectory();
       var targetPath = dir.absolute.path + "/temp.jpg";
-      setState(() {
-        _imageFile = pickedFile;
-      });
 
-      await profileRepo.cropImage(
-          _imageFile.path, context, targetPath);
+      if(pickedFile == null){
+        print("didn't pick file");
+        profileRepo.loading = false;
+      }else {
+        setState(() {
+          _imageFile = pickedFile;
+        });
+        await profileRepo.cropImage(
+            pickedFile.path, context, targetPath);
+      }
 
     } catch (e) {
-     // profileRepo.loading = false;
+
+      print("this error"+ e.toString());
+      profileRepo.loading = false;
 
       setState(() {
         _pickImageError = e;

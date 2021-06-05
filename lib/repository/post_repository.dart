@@ -137,8 +137,6 @@ class PostRepository extends ChangeNotifier{
     if (croppedFile != null) {
       print("cropped file is" + croppedFile.path);
 
-
-
       Map<String, String> metadata = <String, String>{};
       metadata['name'] = "user_$uuid";
 

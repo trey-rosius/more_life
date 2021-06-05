@@ -7,7 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 class ProfileScreen extends StatefulWidget {
   ProfileScreen(this.userId);
   final String userId;
@@ -75,6 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )),
 
                       Container(
+                        padding: EdgeInsets.only(top: 20),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,6 +91,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Container(
                               child: Text('@'+ user.username,style: TextStyle(fontSize: 18,color: ThemeColor.primary),),
+                            ),
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text("Created ",style: TextStyle(color: ThemeColor.white),),
+                                  Text(timeago.format(user.createdOn.getDateTimeInUtc()),style: TextStyle(color: ThemeColor.white),)
+                                ],
+                              ),
                             )
                           ],
                         ),
