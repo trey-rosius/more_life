@@ -133,29 +133,44 @@ class LoginRepository extends ChangeNotifier{
           )
       );
 
+
         isSignUpComplete = res.isSignUpComplete;
-      loading =false;
+        loading =false;
        return isSignUpComplete;
     } on AuthException catch (e) {
 
       print(e.message);
       loading =false;
-      return isSignUpComplete;
+
     }
   }
-  Future<bool> confirmUser(String username) async {
-    try {
+  Future<bool> confirmUser(String username,String password,String email) async {
+    print("username is "+username);
+    print("password is"+password);
+    print("email is"+email);
+    loading = true;
+
       SignUpResult res = await Amplify.Auth.confirmSignUp(
           username: username,
           confirmationCode: codeController.text.trim());
 
-        isOTPSignUpComplete = res.isSignUpComplete;
-        return isOTPSignUpComplete;
 
-    } on AuthException catch (e) {
-      print(e.message);
-      return isOTPSignUpComplete;
-    }
+        if(res.isSignUpComplete){
+          print("Sing up is complete");
+          SignInResult signInRes = await Amplify.Auth.signIn(
+            username: username,
+            password: password,
+          );
+          loading = false;
+          return signInRes.isSignedIn;
+        }else{
+          loading = false;
+          return isSignedIn;
+
+        }
+
+
+
   }
 
 

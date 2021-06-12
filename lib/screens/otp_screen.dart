@@ -1,4 +1,5 @@
 import 'package:amp_auth/repository/login_repository.dart';
+import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/create_profile_screen.dart';
 import 'package:amp_auth/screens/edit_profile_screen.dart';
 import 'package:amp_auth/utils/app_theme.dart';
@@ -10,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OtpScreen extends StatefulWidget {
-  OtpScreen({this.username});
+  OtpScreen({this.username,this.password,this.email});
   final String username;
+  final String password;
+  final String email;
   @override
   _OtpScreenState createState() => _OtpScreenState();
 }
@@ -25,6 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ThemeColor.bgColor,
         appBar: AppBar(
           title: Text("OTP Screen"),
         ),
@@ -94,7 +98,11 @@ class _OtpScreenState extends State<OtpScreen> {
                                   validator: (value) =>
                                       Validations.validateOTP(value)),
                             ),
-                            Container(
+                            loginRepo.loading? Container(
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.all(20),
+                              child: Center(child: CircularProgressIndicator()),
+                            ) :  Container(
                               margin: EdgeInsets.all(20),
                               width: SizeConfig.screenWidth,
                               height: 50.toHeight,
@@ -115,17 +123,20 @@ class _OtpScreenState extends State<OtpScreen> {
                                     BorderRadius.all(Radius.circular(10.0)),
                               ),
                               child: TextButton(
-                                child: Text("Confirm Account"),
+                                child: Text("Confirm Account",style: TextStyle(fontSize: 20,color: Colors.white),),
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
-                                    loginRepo.confirmUser(widget.username).then((bool value) {
+                                    loginRepo.confirmUser(widget.username,widget.password,widget.email).then((bool value) {
                                       if(value){
                                        // Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
                                         Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                          return CreateProfileScreen();
+                                          return ChangeNotifierProvider(create: (_)=>ProfileRepository.instance(),
+                                            child:  CreateProfileScreen(),
+                                          );
+
                                         }));
                                       }else{
-                                        print("couldn't confirm user");
+                                        print("couldn't Sign User In");
                                       }
                                     });
                                   }

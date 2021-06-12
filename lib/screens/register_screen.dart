@@ -193,7 +193,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
 
 
-                            Container(
+                            loginRepo.loading? Container(
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.all(20),
+                              child: Center(child: CircularProgressIndicator()),
+                            ) :  Container(
                               margin: EdgeInsets.all(20),
                               width: SizeConfig.screenWidth,
                               height: 50.toHeight,
@@ -211,13 +215,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               child: TextButton(child: Text("Register",style: TextStyle(color: Colors.white,fontSize: 20),),onPressed: (){
                                 if (_formKey.currentState.validate()) {
                                  loginRepo.register().then((bool value){
-                                   if(value){
+
                                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                                       return OtpScreen(username: loginRepo.usernameController.text.trim(),);
+                                       return OtpScreen(username: loginRepo.usernameController.text.trim(),
+                                       password: loginRepo.passwordController.text.trim(),
+                                       email:loginRepo.emailController.text.trim(),);
                                      }));
-                                   }else{
-                                     print("failed to register");
-                                   }
+
                                  });
 
                                 }

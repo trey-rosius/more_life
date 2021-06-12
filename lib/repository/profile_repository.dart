@@ -194,7 +194,7 @@ class ProfileRepository extends ChangeNotifier {
   loading = true;
     User newUser = User(
         id:userId,username:username,firstName: firstNamesController.text.trim(),lastName: lastNamesController.text.trim(),
-    profilePicUrl: profilePicKey,email: email,createdOn: TemporalDateTime.now(),isVerified: true);
+    profilePicUrl: profilePic,email: email,createdOn: TemporalDateTime.now(),isVerified: true);
 
     await Amplify.DataStore.save(newUser).then((_) => loading = false);
 
@@ -205,11 +205,14 @@ class ProfileRepository extends ChangeNotifier {
   Future<void>updateUserProfileDetails(String userId) async{
     loading = true;
     List<User> user = await Amplify.DataStore.query(User.classType, where: User.ID.eq(userId));
+    if(user[0] != null){
+      User newUser = user[0].copyWith(id: user[0].id,firstName: firstNamesController.text.trim(),lastName: lastNamesController.text.trim(),
+          profilePicUrl: profilePic,updatedOn: TemporalDateTime.now());
 
-    User newUser = user[0].copyWith(id: user[0].id,firstName: firstNamesController.text.trim(),lastName: lastNamesController.text.trim(),
-      profilePicUrl: profilePic,updatedOn: TemporalDateTime.now());
+      await Amplify.DataStore.save(newUser).then((_) => loading = false);
+    }
 
-    await Amplify.DataStore.save(newUser).then((_) => loading = false);
+
 
 
   }

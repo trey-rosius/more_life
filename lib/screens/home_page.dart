@@ -45,13 +45,15 @@ Stream<SubscriptionEvent<Post>> postStream;
     });
 
 
+/*
+   if(userId != null){
+     postProvider.queryAllPosts().then((List<Post> posts) {
 
-    postProvider.queryAllPosts().then((List<Post> posts) {
-
-      print(posts.toString());
-      postProvider.posts = posts;
-    });
-
+       print(posts.toString());
+       postProvider.posts = posts;
+     });
+   }
+*/
    postStream = Amplify.DataStore.observe(Post.classType);
     postStream.listen((event) {
     postProvider.posts.insert(0, event.item);
@@ -101,7 +103,11 @@ Stream<SubscriptionEvent<Post>> postStream;
       backgroundColor: ThemeColor.black,
       appBar: AppBar(
 
-        title: Text("Home Page"),
+        title: Text("NFT MARKET",
+          style: TextStyle(fontSize: 20,
+              fontFamily: 'SeymourOne',
+
+              foreground: Paint()..shader = ThemeColor.linearGradient),),
         actions: [
           IconButton(
             color: Colors.white,
@@ -121,26 +127,26 @@ Stream<SubscriptionEvent<Post>> postStream;
       body:   IndexedStack(
         index:_selectedTabIndex ,
         children: [
-      FutureProvider.value(value: postRepo.queryAllPosts(),
-       catchError: (context,error){
-         print(error.toString());
-       },
-       child: Consumer(builder: (_,List<Post> posts,child){
-         if(posts != null){
-           if(posts.isNotEmpty){
-             return  ListView.builder(
+          FutureProvider.value(value: postRepo.queryAllPosts(),
+            catchError: (context,error){
+              print(error.toString());
+            },
+            child: Consumer(builder: (_,List<Post> posts,child){
+              if(posts != null){
+                if(posts.isNotEmpty){
+                  return  ListView.builder(
 
 
-               itemBuilder: (context,index){
-                 return PostItem(userId,postRepo.posts[index]);
-               },itemCount: postRepo.posts.length,);
-           }else{
-            return Container();
-           }
-         }else{
-           return Container(child: Center(child: CircularProgressIndicator(),),);
-         }
-       },),),
+                    itemBuilder: (context,index){
+                      return PostItem(userId,posts[index]);
+                    },itemCount: posts.length,);
+                }else{
+                  return Container(color: Colors.red,);
+                }
+              }else{
+                return Container(child: Center(child: CircularProgressIndicator(),),);
+              }
+            },),),
 
           ProfileScreen(userId),
           ProfileScreen(userId),
@@ -149,7 +155,7 @@ Stream<SubscriptionEvent<Post>> postStream;
 
 
       bottomNavigationBar: FABBottomAppBar(
-        centerItemText: 'SellUp',
+        centerItemText: 'nft',
         color: Colors.grey,
         selectedColor: ThemeColor.primary,
 

@@ -4,6 +4,7 @@ import 'package:amp_auth/repository/login_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
 import 'package:amp_auth/screens/create_profile_screen.dart';
 import 'package:amp_auth/screens/edit_profile_screen.dart';
+import 'package:amp_auth/screens/register_screen.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
@@ -46,17 +47,20 @@ class _LoginScreenState extends State<LoginScreen> {
     return ChangeNotifierProvider(create: (_)=> LoginRepository.instance(),
     child: Consumer(builder: (_,LoginRepository loginRep,child){
       return Scaffold(
-          appBar: AppBar(title: Text("Login to account"),centerTitle: true,elevation: 0.0,),
+          appBar: AppBar(title: Text("Log In"),centerTitle: true,elevation: 0.0,),
           body: SingleChildScrollView(
             child: Container(
               color: ThemeColor.bgColor,
               height: SizeConfig.screenHeight,
               child: Column(
                 children: [
-
                   Container(
                     padding:EdgeInsets.symmetric(vertical: 20) ,
-                    child: Text("NFT'S",style: TextStyle(fontSize: 30,fontFamily: 'SeymourOne',color: Colors.white),),),
+                    child:  Text("NFT MARKET",
+                      style: TextStyle(fontSize: 30,
+                          fontFamily: 'SeymourOne',
+
+                          foreground: Paint()..shader = ThemeColor.linearGradient),),),
                   Form(
                       key: _formKey,
                       child: Container(
@@ -219,6 +223,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                               ),
                             ),
+                            TextButton(onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                // return RegisterScreen();
+                                //return LoginScreen();
+
+                                return RegisterScreen();
+
+
+                              }));
+                            }, child: Text("Register")),
+
 
 
                             loginRep.googleLoading? Container(
@@ -230,24 +245,18 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: SizeConfig.screenWidth,
                               height: 80.toHeight,
                               padding: EdgeInsets.all(20),
-                              child: ElevatedButton(
+                              child: TextButton(
+
 
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(ThemeColor.secondary),
                                 ),
-                                child: Text("Sign in With Google",style: TextStyle(fontSize: 18),),
+                                child: Text("Sign in With Google",style: TextStyle(fontSize: 18,color: Colors.white),),
                                 onPressed: (){
                                   loginRep.googleSignIn();
                                 },
                               ),
 
                             ),
-                            TextButton(onPressed: (){
-                              try {
-                                Amplify.Auth.signOut();
-                              } on AuthException catch (e) {
-                                print(e.message);
-                              }
-                            }, child: Text("Log out"))
 
                           ],
                         ),

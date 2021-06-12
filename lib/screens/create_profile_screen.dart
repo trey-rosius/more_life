@@ -3,7 +3,10 @@ import 'dart:io';
 
 
 
+import 'package:amp_auth/repository/comments_repository.dart';
+import 'package:amp_auth/repository/post_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
+import 'package:amp_auth/screens/home_page.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
@@ -232,7 +235,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Edit Profile",
+                    "Create Profile",
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -470,6 +473,18 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                                 profileRepo.saveUserProfileDetails().then((_){
 
                                   print("save to database");
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return MultiProvider(
+                                      providers: [
+                                        ChangeNotifierProvider(create: (_) => ProfileRepository.instance(),),
+                                        ChangeNotifierProvider(create: (_) => PostRepository.instance(),),
+                                        ChangeNotifierProvider(create: (_) => CommentsRepository.instance(),),
+
+                                      ],
+                                      child: HomePage(),
+
+                                    );
+                                  }));
 
                                 });
 
