@@ -27,7 +27,7 @@ class ProfileRepository extends ChangeNotifier {
   String _userId;
   String _username;
   String _email;
-
+  bool _logout = false;
 
   String get email => _email;
 
@@ -42,7 +42,12 @@ class ProfileRepository extends ChangeNotifier {
     _username = value;
     notifyListeners();
   }
+  bool get logout => _logout;
 
+  set logout(bool value) {
+    _logout = value;
+    notifyListeners();
+  }
   String get userId => _userId;
 
   set userId(String value) {
@@ -155,6 +160,17 @@ class ProfileRepository extends ChangeNotifier {
 
     }else{
       loading = false;
+    }
+  }
+
+  Future<bool>signOut() async{
+    try {
+      Amplify.Auth.signOut();
+      return logout = true;
+    } on AuthException catch (e) {
+
+      print(e.message);
+      return logout  = false;
     }
   }
 

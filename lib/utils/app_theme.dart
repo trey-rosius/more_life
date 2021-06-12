@@ -19,6 +19,15 @@ class ThemeColor {
   static const Color greyColor = Color(0xFF161616);
   static const Color chatBoxOther = Color(0xFF3d3d3f);
   static const Color secondary = Color(0xFFf94c84);
+  static const Color color1 = Color(0xFFfa709a);
+  static const Color color2 = Color(0xFFfee240);
   static const Color cardBackground = Color(0xFF434343);
 
+
+  static Shader linearGradient = LinearGradient(
+    colors: <Color>[secondary, primary],
+  ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+  static Shader linearGradient2 = LinearGradient(
+    colors: <Color>[color1, color2],
+  ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 }

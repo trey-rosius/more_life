@@ -132,7 +132,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     var commentsRepo = context.watch<CommentsRepository>();
     return Scaffold(
       backgroundColor: ThemeColor.black,
-      appBar: AppBar(title: Text("Post",),centerTitle: true,),
+      appBar: AppBar(title: Text("Comments",),centerTitle: true,),
       body: Column(
         children: [
           FutureProvider.value(value: CommentsRepository.instance().queryAllCommentsForPost(widget.post.id),

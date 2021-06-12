@@ -4,9 +4,11 @@ import 'package:amp_auth/models/Post.dart';
 import 'package:amp_auth/repository/post_repository.dart';
 
 import 'package:amp_auth/repository/profile_repository.dart';
+import 'package:amp_auth/screens/login_screen.dart';
 import 'package:amp_auth/screens/nav/fab_bottom_app_bar.dart';
 import 'package:amp_auth/screens/post_item.dart';
 import 'package:amp_auth/screens/profile_screen.dart';
+import 'package:amp_auth/screens/register_screen.dart';
 import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amp_auth/utils/size_config.dart';
@@ -35,23 +37,23 @@ Stream<SubscriptionEvent<Post>> postStream;
     var provider = context.read<ProfileRepository>();
     var postProvider = context.read<PostRepository>();
     provider.retrieveCurrentUser().then((AuthUser authUser) {
-      setState(() {
-        userId = authUser.userId;
-      });
+
+       setState(() {
+         userId = authUser.userId;
+       });
+
     });
 
 
 
     postProvider.queryAllPosts().then((List<Post> posts) {
-      print("this is a post list");
+
       print(posts.toString());
       postProvider.posts = posts;
     });
 
    postStream = Amplify.DataStore.observe(Post.classType);
     postStream.listen((event) {
-
-
     postProvider.posts.insert(0, event.item);
     print('Received event of type ' + event.eventType.toString());
     print('Received post ' + event.item.toString());
@@ -91,32 +93,59 @@ Stream<SubscriptionEvent<Post>> postStream;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     var postRepo = context.watch<PostRepository>();
-    return Scaffold(
+    var profileRepo = context.watch<ProfileRepository>();
+    return userId == null ?RegisterScreen() :
+     Scaffold(
       backgroundColor: ThemeColor.black,
       appBar: AppBar(
 
         title: Text("Home Page"),
+        actions: [
+          IconButton(
+            color: Colors.white,
+              icon: Icon(Icons.login), onPressed: (){
+            profileRepo.signOut().then((bool signOut){
+              if(signOut){
+                Navigator.push(context, MaterialPageRoute(builder: (context){
+                  return LoginScreen();
+                }));
+              }else{
+                print("couldn't sign out");
+              }
+            });
+          })
+        ],
       ),
       body:   IndexedStack(
-      index:_selectedTabIndex ,
-      children: [
-        ListView.builder(
+        index:_selectedTabIndex ,
+        children: [
+      FutureProvider.value(value: postRepo.queryAllPosts(),
+       catchError: (context,error){
+         print(error.toString());
+       },
+       child: Consumer(builder: (_,List<Post> posts,child){
+         if(posts != null){
+           if(posts.isNotEmpty){
+             return  ListView.builder(
 
 
-          itemBuilder: (context,index){
-            return PostItem(userId,postRepo.posts[index]);
-          },itemCount: postRepo.posts.length,),
-        ProfileScreen(userId),
-        ProfileScreen(userId),
-        ProfileScreen(userId),
-      ],),
+               itemBuilder: (context,index){
+                 return PostItem(userId,postRepo.posts[index]);
+               },itemCount: postRepo.posts.length,);
+           }else{
+            return Container();
+           }
+         }else{
+           return Container(child: Center(child: CircularProgressIndicator(),),);
+         }
+       },),),
+
+          ProfileScreen(userId),
+          ProfileScreen(userId),
+          ProfileScreen(userId),
+        ],),
 
 
       bottomNavigationBar: FABBottomAppBar(
@@ -163,6 +192,7 @@ Stream<SubscriptionEvent<Post>> postStream;
        */
 
     );
+
 
 
   }

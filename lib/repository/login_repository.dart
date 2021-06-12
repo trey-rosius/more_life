@@ -4,21 +4,41 @@ import 'package:flutter/cupertino.dart';
 
 class LoginRepository extends ChangeNotifier{
 
-
+  LoginRepository.instance();
   final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final codeController = TextEditingController();
   bool _isSignedIn = false;
   bool _loading = false;
+
+
   bool _googleLoading = false;
-  final passwordController = TextEditingController();
 
+  bool _isOTPSignUpComplete = false;
 
+  bool _isSignUpComplete = false;
   bool get isSignedIn => _isSignedIn;
+
+  bool get isSignUpComplete => _isSignUpComplete;
+
+  set isSignUpComplete(bool value) {
+    _isSignUpComplete = value;
+    notifyListeners();
+  }
 
   set isSignedIn(bool value) {
     _isSignedIn = value;
     notifyListeners();
   }
 
+
+  bool get isOTPSignUpComplete => _isOTPSignUpComplete;
+
+  set isOTPSignUpComplete(bool value) {
+    _isOTPSignUpComplete = value;
+    notifyListeners();
+  }
 
   bool get googleLoading => _googleLoading;
 
@@ -68,6 +88,10 @@ class LoginRepository extends ChangeNotifier{
 
 
   }
+  Future<AuthUser>retrieveCurrentUser() async{
+    AuthUser authUser = await Amplify.Auth.getCurrentUser();
+    return authUser;
+  }
   Future<bool> login() async{
     loading = true;
     try {
@@ -81,7 +105,7 @@ class LoginRepository extends ChangeNotifier{
       if(isSignedIn){
         print("Google signed In");
         loading = false;
-        retrieveUserAttributes();
+
       }else{
         loading = false;
       }
@@ -93,6 +117,48 @@ class LoginRepository extends ChangeNotifier{
       return isSignedIn;
     }
   }
+  Future<bool> register() async{
+    loading =true;
+    try {
+      Map<String, String> userAttributes = {
+        'email': emailController.text.trim(),
+        'phone_number': '+15559101234',
+        // additional attributes as needed
+      };
+      SignUpResult res = await Amplify.Auth.signUp(
+          username: usernameController.text.trim(),
+          password: passwordController.text.trim(),
+          options: CognitoSignUpOptions(
+              userAttributes: userAttributes
+          )
+      );
+
+        isSignUpComplete = res.isSignUpComplete;
+      loading =false;
+       return isSignUpComplete;
+    } on AuthException catch (e) {
+
+      print(e.message);
+      loading =false;
+      return isSignUpComplete;
+    }
+  }
+  Future<bool> confirmUser(String username) async {
+    try {
+      SignUpResult res = await Amplify.Auth.confirmSignUp(
+          username: username,
+          confirmationCode: codeController.text.trim());
+
+        isOTPSignUpComplete = res.isSignUpComplete;
+        return isOTPSignUpComplete;
+
+    } on AuthException catch (e) {
+      print(e.message);
+      return isOTPSignUpComplete;
+    }
+  }
+
+
 
   @override
   void dispose() {
@@ -100,6 +166,7 @@ class LoginRepository extends ChangeNotifier{
     super.dispose();
     usernameController.dispose();
     passwordController.dispose();
+    emailController.dispose();
   }
 
 }

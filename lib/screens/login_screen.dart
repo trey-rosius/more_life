@@ -21,36 +21,20 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
-  StreamSubscription hubSubscription;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     print("in here");
-     hubSubscription = Amplify.Hub.listen([HubChannel.Auth], (hubEvent) {
-      switch(hubEvent.eventName) {
-        case "SIGNED_IN": {
 
-          print("USER IS SIGNED IN");
-        }
-        break;
-        case "SIGNED_OUT": {
-          print("USER IS SIGNED OUT");
-        }
-        break;
-        case "SESSION_EXPIRED": {
-          print("USER IS SIGNED IN");
-        }
-        break;
-      }
-    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    hubSubscription.cancel();
+
 
   }
 
@@ -59,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return ChangeNotifierProvider(create: (_)=> LoginRepository(),
+    return ChangeNotifierProvider(create: (_)=> LoginRepository.instance(),
     child: Consumer(builder: (_,LoginRepository loginRep,child){
       return Scaffold(
           appBar: AppBar(title: Text("Login to account"),centerTitle: true,elevation: 0.0,),
@@ -71,14 +55,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
 
                   Container(
-                      child:Column(
-                        children: [
-                          Text('More ',style: TextStyle(fontSize: 35,fontFamily: 'Pacifico',color: Colors.white),),
-                          Text('life',style: TextStyle(fontSize: 40,fontFamily: 'Pacifico',color: Colors.white),),
-
-                        ],
-                      )
-                  ),
+                    padding:EdgeInsets.symmetric(vertical: 20) ,
+                    child: Text("NFT'S",style: TextStyle(fontSize: 30,fontFamily: 'SeymourOne',color: Colors.white),),),
                   Form(
                       key: _formKey,
                       child: Container(
@@ -215,12 +193,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                     loginRep.login().then((bool isSignedIn){
                                       if(isSignedIn) {
                                         print("signed In");
+                                        loginRep.retrieveCurrentUser().then((AuthUser authUser) {
 
-                                        Navigator.push(context, MaterialPageRoute(builder: (context){
-                                          return ChangeNotifierProvider(create: (_)=>ProfileRepository.instance(),
+                                          Navigator.push(context, MaterialPageRoute(builder: (context){
+                                            // return RegisterScreen();
+                                            //return LoginScreen();
 
-                                           child: CreateProfileScreen());
-                                        }));
+                                            return ChangeNotifierProvider(create: (_)=>ProfileRepository.instance(),
+                                              child: EditProfileScreen(authUser.userId),);
+
+
+                                          }));
+
+                                        });
+
+
 
 
                                       }
