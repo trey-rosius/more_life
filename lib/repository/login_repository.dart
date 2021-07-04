@@ -1,6 +1,7 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class LoginRepository extends ChangeNotifier{
 
@@ -30,6 +31,10 @@ class LoginRepository extends ChangeNotifier{
   set isSignedIn(bool value) {
     _isSignedIn = value;
     notifyListeners();
+  }
+
+  showSnackBar(BuildContext context,String message){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Container(child: Text(message,style: TextStyle(fontSize: 20),),)));
   }
 
 
@@ -117,7 +122,7 @@ class LoginRepository extends ChangeNotifier{
       return isSignedIn;
     }
   }
-  Future<bool> register() async{
+  Future<bool> register(BuildContext context) async{
     loading =true;
     try {
       Map<String, String> userAttributes = {
@@ -134,11 +139,13 @@ class LoginRepository extends ChangeNotifier{
       );
 
 
+
+       print("is sign up complete" + res.isSignUpComplete.toString());
         isSignUpComplete = res.isSignUpComplete;
         loading =false;
        return isSignUpComplete;
     } on AuthException catch (e) {
-
+      showSnackBar(context,e.message);
       print(e.message);
       loading =false;
 

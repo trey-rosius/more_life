@@ -214,13 +214,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               ),
                               child: TextButton(child: Text("Register",style: TextStyle(color: Colors.white,fontSize: 20),),onPressed: (){
                                 if (_formKey.currentState.validate()) {
-                                 loginRepo.register().then((bool value){
+                                 loginRepo.register(context).then((bool value){
 
-                                     Navigator.push(context, MaterialPageRoute(builder: (context){
-                                       return OtpScreen(username: loginRepo.usernameController.text.trim(),
-                                       password: loginRepo.passwordController.text.trim(),
-                                       email:loginRepo.emailController.text.trim(),);
-                                     }));
+                                    if(loginRepo.isSignUpComplete) {
+                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return OtpScreen(username: loginRepo.usernameController.text.trim(),
+                                          password: loginRepo.passwordController.text.trim(),
+                                          email:loginRepo.emailController.text.trim(),);
+                                      }));
+                                    }else{
+
+                                    }
+
 
                                  });
 

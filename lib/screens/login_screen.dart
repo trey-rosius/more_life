@@ -2,13 +2,10 @@ import 'dart:async';
 
 import 'package:amp_auth/repository/login_repository.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
-import 'package:amp_auth/screens/create_profile_screen.dart';
 import 'package:amp_auth/screens/edit_profile_screen.dart';
 import 'package:amp_auth/screens/register_screen.dart';
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:amp_auth/utils/size_config.dart';

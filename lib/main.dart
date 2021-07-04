@@ -8,7 +8,7 @@ import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/material.dart';
 // Amplify Flutter Packages
 import 'package:amplify_flutter/amplify.dart';
-// import 'package:amplify_api/amplify_api.dart'; // UNCOMMENT this line once backend is deployed
+
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:provider/provider.dart';
 
