@@ -122,7 +122,7 @@ class LoginRepository extends ChangeNotifier{
       return isSignedIn;
     }
   }
-  Future<bool> register(BuildContext context) async{
+  Future<bool?> register(BuildContext context) async{
     loading =true;
     try {
       Map<String, String> userAttributes = {

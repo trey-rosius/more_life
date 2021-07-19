@@ -21,7 +21,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateProfileScreen extends StatefulWidget {
-  CreateProfileScreen({this.email});
+  CreateProfileScreen({required this.email});
   final String email;
 
 
@@ -31,11 +31,11 @@ class CreateProfileScreen extends StatefulWidget {
 
 class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
-  PickedFile _imageFile;
+  XFile? _imageFile;
   dynamic _pickImageError;
 
   final ImagePicker _picker = ImagePicker();
-  File file;
+  File? file;
 
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -47,16 +47,16 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
 
 
-  String _retrieveDataError;
+  String? _retrieveDataError;
 
 
 
 
 
 
-  Text _getRetrieveErrorWidget() {
+  Text? _getRetrieveErrorWidget() {
     if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError);
+      final Text result = Text(_retrieveDataError!);
       _retrieveDataError = null;
       return result;
     }
@@ -65,7 +65,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
   Widget _previewImage(ProfileRepository profileRepo, BuildContext context) {
 
-    final Text retrieveError = _getRetrieveErrorWidget();
+    final Text? retrieveError = _getRetrieveErrorWidget();
     if (retrieveError != null) {
       return retrieveError;
     }
@@ -80,7 +80,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Image.network(
-              _imageFile.path,
+              _imageFile!.path,
               height: 100,
               width: 100,
             ),
@@ -92,7 +92,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         return Container(
           child: Semantics(
               child: Image.file(
-                File(_imageFile.path),
+                File(_imageFile!.path),
                 width: 100,
               ),
               label: 'pick image'),
@@ -137,7 +137,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
   }
 
   Future<void> retrieveLostData() async {
-    final LostData response = await _picker.getLostData();
+    final response = await _picker.retrieveLostData();
     if (response.isEmpty) {
       return;
     }
@@ -146,7 +146,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
         _imageFile = response.file;
       });
     } else {
-      _retrieveDataError = response.exception.code;
+      _retrieveDataError = response.exception!.code;
     }
   }
 
@@ -155,7 +155,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
     profileRepo.loading = true;
 
     try {
-      final pickedFile = await _picker.getImage(
+      final pickedFile = await _picker.pickImage(
         source: source,
       );
 
@@ -166,7 +166,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       });
 
       await profileRepo.cropImage(
-          _imageFile.path, context, targetPath);
+          _imageFile!.path, context, targetPath);
 
     } catch (e) {
       // profileRepo.loading = false;
@@ -319,7 +319,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         validator: (value) {
-                          if(value.isEmpty){
+                          if(value!.isEmpty){
                             return "Please enter your first name";
                           }else{
                             return null;
@@ -330,13 +330,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
 
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -348,7 +348,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -372,7 +372,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                         style: TextStyle(color: Colors.white),
 
                         validator: (value) {
-                          if(value.isEmpty){
+                          if(value!.isEmpty){
                             return "Please enter your last name";
                           }else{
                             return null;
@@ -386,13 +386,13 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                         // keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -404,7 +404,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -458,7 +458,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
                             onPressed: () {
 
 
-                              final FormState form = formKey.currentState;
+                              final FormState form = formKey.currentState!;
                               if (!form.validate()) {
 
                               } else {

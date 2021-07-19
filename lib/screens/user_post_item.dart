@@ -76,7 +76,7 @@ class UserPostItem extends StatelessWidget {
                     Container(
                       padding:EdgeInsets.all(15),
                       margin: EdgeInsets.all(10),
-                      width: SizeConfig.screenWidth/2.5,
+                      width: SizeConfig.screenWidth!/2.5,
 
 
                       decoration: BoxDecoration(

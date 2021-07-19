@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OtpScreen extends StatefulWidget {
-  OtpScreen({this.username,this.password,this.email});
+  OtpScreen({required this.username,required this.password,required this.email});
   final String username;
   final String password;
   final String email;
@@ -54,7 +54,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.grey[700],
+                                          color: (Colors.grey[700])!,
                                           width: 2.toWidth),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.toWidth),
@@ -62,7 +62,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.grey[700],
+                                          color: (Colors.grey[700])!,
                                           width: 2.toWidth),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.toWidth),
@@ -78,7 +78,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     ),
                                     disabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.grey[700],
+                                          color:(Colors.grey[700])!,
                                           width: 2.toWidth),
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(10.toWidth),
@@ -96,7 +96,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     ),
                                   ),
                                   validator: (value) =>
-                                      Validations.validateOTP(value)),
+                                      Validations.validateOTP(value!)),
                             ),
                             loginRepo.loading? Container(
                               padding: EdgeInsets.all(10),
@@ -125,13 +125,13 @@ class _OtpScreenState extends State<OtpScreen> {
                               child: TextButton(
                                 child: Text("Confirm Account",style: TextStyle(fontSize: 20,color: Colors.white),),
                                 onPressed: () {
-                                  if (_formKey.currentState.validate()) {
+                                  if (_formKey.currentState!.validate()) {
                                     loginRepo.confirmUser(widget.username,widget.password,widget.email).then((bool value) {
                                       if(value){
                                        // Navigator.pushAndRemoveUntil(context, newRoute, (route) => false);
                                         Navigator.push(context, MaterialPageRoute(builder: (context) {
                                           return ChangeNotifierProvider(create: (_)=>ProfileRepository.instance(),
-                                            child:  CreateProfileScreen(),
+                                            child:  CreateProfileScreen(email: widget.email,),
                                           );
 
                                         }));

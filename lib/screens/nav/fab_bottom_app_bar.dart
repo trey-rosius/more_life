@@ -8,23 +8,22 @@ import 'package:provider/provider.dart';
 
 
 class FABBottomAppBarItem {
-  FABBottomAppBarItem({this.iconName, this.text});
+  FABBottomAppBarItem({required this.iconName, required this.text});
   String iconName;
   String text;
 }
 
 class FABBottomAppBar extends StatefulWidget {
   FABBottomAppBar({
-    this.items,
-    this.centerItemText,
-    this.height: 60.0,
-    this.iconSize: 24.0,
-    this.backgroundColor,
-    this.color,
-    this.selectedColor,
+    required this.items,
+    required  this.centerItemText,
+     this.height: 60.0,
+     this.iconSize: 24.0,
+    required this.color,
+    required this.selectedColor,
 
-    this.onTabSelected,
-    this.userId,
+    required this.onTabSelected,
+    required this.userId,
 
   }) {
   //  assert(this.items.length == 2 || this.items.length == 4);
@@ -33,7 +32,7 @@ class FABBottomAppBar extends StatefulWidget {
   final String centerItemText;
   final double height;
   final double iconSize;
-  final Color backgroundColor;
+
   final Color color;
   final Color selectedColor;
 
@@ -91,6 +90,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                 catchError: (context,error){
                 print(error);
                 },
+                initialData: null,
                 child: CreatePostScreen(userId: widget.userId,),
               );
             }));
@@ -136,9 +136,9 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
   }
 
   Widget _buildTabItem({
-    FABBottomAppBarItem item,
-    int index,
-    ValueChanged<int> onPressed,
+    FABBottomAppBarItem? item,
+    int? index,
+    required ValueChanged<int> onPressed,
   }) {
     Color color = _selectedIndex == index ? widget.selectedColor : widget.color;
     return Expanded(
@@ -147,7 +147,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
         child: Material(
           type: MaterialType.transparency,
           child: InkWell(
-            onTap: () => onPressed(index),
+            onTap: () => onPressed(index!),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +167,7 @@ class FABBottomAppBarState extends State<FABBottomAppBar> {
                           Align(
                             alignment:Alignment.center,
                             child: SvgPicture.asset(
-                              item.iconName,
+                              item!.iconName,
 
                               height: 24,
                               width: 24,

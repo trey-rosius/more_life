@@ -9,31 +9,31 @@ import 'package:amp_auth/utils/size_config.dart';
 
 import 'package:path_provider/path_provider.dart' as path_provider;
 class CreatePostScreen extends StatefulWidget {
-  CreatePostScreen({this.userId});
+  CreatePostScreen({required this.userId});
   final String userId;
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
 }
 
 class _CreatePostScreenState extends State<CreatePostScreen> {
-  Text _getRetrieveErrorWidget() {
+  Text? _getRetrieveErrorWidget() {
     if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError);
+      final Text result = Text(_retrieveDataError!);
       _retrieveDataError = null;
       return result;
     }
     return null;
   }
-  PickedFile _imageFile;
+  XFile? _imageFile;
   dynamic _pickImageError;
 
   final ImagePicker _picker = ImagePicker();
 
-  String _retrieveDataError;
+  String? _retrieveDataError;
 
 
   Future<void> retrieveLostData() async {
-    final LostData response = await _picker.getLostData();
+    final response = await _picker.retrieveLostData();
     if (response.isEmpty) {
       return;
     }
@@ -42,7 +42,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         _imageFile = response.file;
       });
     } else {
-      _retrieveDataError = response.exception.code;
+      _retrieveDataError = response.exception!.code;
     }
   }
 
@@ -131,7 +131,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                                   width: 40.0,
                                   height: 40.0,
                                   fit: BoxFit.cover,
-                                  imageUrl: user.profilePicUrl,
+                                  imageUrl: user.profilePicUrl!,
                                   placeholder: (context,
                                       url) =>
                                       CircularProgressIndicator(),
@@ -162,7 +162,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                             maxLines: 4,
 
                             validator: (value) {
-                              if(value.isEmpty){
+                              if(value!.isEmpty){
                                 return "say something..";
                               }else{
                                 return null;

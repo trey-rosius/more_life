@@ -28,11 +28,11 @@ final String userId;
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
 
-  PickedFile _imageFile;
+  PickedFile? _imageFile;
   dynamic _pickImageError;
 
   final ImagePicker _picker = ImagePicker();
-  File file;
+  File? file;
 
   final GlobalKey<FormState> formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -44,16 +44,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 
 
-  String _retrieveDataError;
+  String? _retrieveDataError;
 
 
 
 
 
 
-  Text _getRetrieveErrorWidget() {
+  Text? _getRetrieveErrorWidget() {
     if (_retrieveDataError != null) {
-      final Text result = Text(_retrieveDataError);
+      final Text result = Text(_retrieveDataError!);
       _retrieveDataError = null;
       return result;
     }
@@ -62,7 +62,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Widget _previewImage(ProfileRepository profileRepo, BuildContext context) {
 
-    final Text retrieveError = _getRetrieveErrorWidget();
+    final Text? retrieveError = _getRetrieveErrorWidget();
     if (retrieveError != null) {
       return retrieveError;
     }
@@ -77,7 +77,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Image.network(
-              _imageFile.path,
+              _imageFile!.path,
               height: 100,
               width: 100,
             ),
@@ -89,7 +89,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         return Container(
           child: Semantics(
               child: Image.file(
-                File(_imageFile.path),
+                File(_imageFile!.path),
                 width: 100,
               ),
               label: 'pick image'),
@@ -143,7 +143,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         _imageFile = response.file;
       });
     } else {
-      _retrieveDataError = response.exception.code;
+      _retrieveDataError = response.exception!.code;
     }
   }
 
@@ -316,7 +316,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       child: TextFormField(
                         style: TextStyle(color: Colors.white),
                         validator: (value) {
-                          if(value.isEmpty){
+                          if(value!.isEmpty){
                             return "Please enter your first name";
                           }else{
                             return null;
@@ -327,13 +327,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -345,7 +345,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -369,7 +369,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         style: TextStyle(color: Colors.white),
 
                         validator: (value) {
-                          if(value.isEmpty){
+                          if(value!.isEmpty){
                             return "Please enter your last name";
                           }else{
                             return null;
@@ -383,13 +383,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         // keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -401,7 +401,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                           ),
                           disabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                            borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                             borderRadius: BorderRadius.all(
                               Radius.circular(10.toWidth),
                             ),
@@ -455,7 +455,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             onPressed: () {
 
 
-                              final FormState form = formKey.currentState;
+                              final FormState form = formKey.currentState!;
                               if (!form.validate()) {
 
                               } else {

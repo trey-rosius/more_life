@@ -16,8 +16,8 @@ class PostRepository extends ChangeNotifier{
 
 
   bool get loading => _loading;
-  String _postImageKey;
-  String _postImageUrl;
+  String _postImageKey='';
+  String _postImageUrl='';
   List<Post> _posts = [];
 
 
@@ -122,7 +122,7 @@ class PostRepository extends ChangeNotifier{
     loading = true;
     var uuid =  Uuid().v1();
 
-    File croppedFile = await ImageCropper.cropImage(
+    File? croppedFile = await ImageCropper.cropImage(
         sourcePath: imageFilePath,
         cropStyle: CropStyle.rectangle,
         aspectRatioPresets: Platform.isAndroid

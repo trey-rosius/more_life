@@ -26,8 +26,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-String userId;
-Stream<SubscriptionEvent<Post>> postStream;
+String? userId;
+Stream<SubscriptionEvent<Post>>? postStream;
 
 
   @override
@@ -55,7 +55,7 @@ Stream<SubscriptionEvent<Post>> postStream;
    }
 */
    postStream = Amplify.DataStore.observe(Post.classType);
-    postStream.listen((event) {
+    postStream!.listen((event) {
     postProvider.posts.insert(0, event.item);
     print('Received event of type ' + event.eventType.toString());
     print('Received post ' + event.item.toString());
@@ -131,14 +131,15 @@ Stream<SubscriptionEvent<Post>> postStream;
             catchError: (context,error){
               print(error.toString());
             },
-            child: Consumer(builder: (_,List<Post> posts,child){
+            initialData: [],
+            child: Consumer(builder: (_,List<Post>? posts,child){
               if(posts != null){
                 if(posts.isNotEmpty){
                   return  ListView.builder(
 
 
                     itemBuilder: (context,index){
-                      return PostItem(userId,posts[index]);
+                      return PostItem(userId!,posts[index]);
                     },itemCount: posts.length,);
                 }else{
                   return Container(color: Colors.red,);
@@ -148,9 +149,9 @@ Stream<SubscriptionEvent<Post>> postStream;
               }
             },),),
 
-          ProfileScreen(userId),
-          ProfileScreen(userId),
-          ProfileScreen(userId),
+          ProfileScreen(userId!),
+          ProfileScreen(userId!),
+          ProfileScreen(userId!),
         ],),
 
 
@@ -160,7 +161,7 @@ Stream<SubscriptionEvent<Post>> postStream;
         selectedColor: ThemeColor.primary,
 
         onTabSelected: _selectedTab,
-        userId: userId,
+        userId: userId!,
 
 
         items: [

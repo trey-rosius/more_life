@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 // https://stackoverflow.com/questions/46480221/flutter-floating-action-button-with-speed-dail
 class FabWithIcons extends StatefulWidget {
-  FabWithIcons({this.icons, this.onIconTapped});
+  FabWithIcons({required this.icons, required this.onIconTapped});
   final List<IconData> icons;
-  ValueChanged<int> onIconTapped;
+ final ValueChanged<int> onIconTapped;
   @override
   State createState() => FabWithIconsState();
 }
 
 class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController? _controller;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
       alignment: FractionalOffset.topCenter,
       child: ScaleTransition(
         scale: CurvedAnimation(
-          parent: _controller,
+          parent: _controller!,
           curve: Interval(
               0.0,
               1.0 - index / widget.icons.length / 2.0,
@@ -63,10 +63,10 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
   Widget _buildFab() {
     return FloatingActionButton(
       onPressed: () {
-        if (_controller.isDismissed) {
-          _controller.forward();
+        if (_controller!.isDismissed) {
+          _controller!.forward();
         } else {
-          _controller.reverse();
+          _controller!.reverse();
         }
       },
       tooltip: 'Increment',
@@ -76,7 +76,7 @@ class FabWithIconsState extends State<FabWithIcons> with TickerProviderStateMixi
   }
 
   void _onTapped(int index) {
-    _controller.reverse();
+    _controller!.reverse();
     widget.onIconTapped(index);
   }
 }

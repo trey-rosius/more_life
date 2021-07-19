@@ -1,5 +1,5 @@
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -20,139 +20,140 @@ import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_inte
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
+
 /** This is an auto generated class representing the Chat type in your schema. */
 @immutable
 class Chat extends Model {
   static const classType = const _ChatModelType();
   final String id;
-  final String receiverId;
-  final String senderId;
-  final TemporalDateTime createdOn;
-  final TemporalDateTime updatedOn;
-  final List<ChatItem> chatItems;
-  final List<UserChat> users;
+  final String? _receiverId;
+  final String? _senderId;
+  final TemporalDateTime? _createdOn;
+  final TemporalDateTime? _updatedOn;
+  final List<ChatItem>? _chatItems;
+  final List<UserChat>? _users;
 
   @override
   getInstanceType() => classType;
-
+  
   @override
   String getId() {
     return id;
   }
-
-  const Chat._internal(
-      {@required this.id,
-      @required this.receiverId,
-      @required this.senderId,
-      this.createdOn,
-      this.updatedOn,
-      this.chatItems,
-      this.users});
-
-  factory Chat(
-      {String id,
-      @required String receiverId,
-      @required String senderId,
-      TemporalDateTime createdOn,
-      TemporalDateTime updatedOn,
-      List<ChatItem> chatItems,
-      List<UserChat> users}) {
-    return Chat._internal(
-        id: id == null ? UUID.getUUID() : id,
-        receiverId: receiverId,
-        senderId: senderId,
-        createdOn: createdOn,
-        updatedOn: updatedOn,
-        chatItems: chatItems != null ? List.unmodifiable(chatItems) : chatItems,
-        users: users != null ? List.unmodifiable(users) : users);
+  
+  String get receiverId {
+    try {
+      return _receiverId!;
+    } catch(e) {
+      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+    }
   }
-
+  
+  String get senderId {
+    try {
+      return _senderId!;
+    } catch(e) {
+      throw new DataStoreException(DataStoreExceptionMessages.codeGenRequiredFieldForceCastExceptionMessage, recoverySuggestion: DataStoreExceptionMessages.codeGenRequiredFieldForceCastRecoverySuggestion, underlyingException: e.toString());
+    }
+  }
+  
+  TemporalDateTime? get createdOn {
+    return _createdOn;
+  }
+  
+  TemporalDateTime? get updatedOn {
+    return _updatedOn;
+  }
+  
+  List<ChatItem>? get chatItems {
+    return _chatItems;
+  }
+  
+  List<UserChat>? get users {
+    return _users;
+  }
+  
+  const Chat._internal({required this.id, required receiverId, required senderId, createdOn, updatedOn, chatItems, users}): _receiverId = receiverId, _senderId = senderId, _createdOn = createdOn, _updatedOn = updatedOn, _chatItems = chatItems, _users = users;
+  
+  factory Chat({String? id, required String receiverId, required String senderId, TemporalDateTime? createdOn, TemporalDateTime? updatedOn, List<ChatItem>? chatItems, List<UserChat>? users}) {
+    return Chat._internal(
+      id: id == null ? UUID.getUUID() : id,
+      receiverId: receiverId,
+      senderId: senderId,
+      createdOn: createdOn,
+      updatedOn: updatedOn,
+      chatItems: chatItems != null ? List<ChatItem>.unmodifiable(chatItems) : chatItems,
+      users: users != null ? List<UserChat>.unmodifiable(users) : users);
+  }
+  
   bool equals(Object other) {
     return this == other;
   }
-
+  
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Chat &&
-        id == other.id &&
-        receiverId == other.receiverId &&
-        senderId == other.senderId &&
-        createdOn == other.createdOn &&
-        updatedOn == other.updatedOn &&
-        DeepCollectionEquality().equals(chatItems, other.chatItems) &&
-        DeepCollectionEquality().equals(users, other.users);
+      id == other.id &&
+      _receiverId == other._receiverId &&
+      _senderId == other._senderId &&
+      _createdOn == other._createdOn &&
+      _updatedOn == other._updatedOn &&
+      DeepCollectionEquality().equals(_chatItems, other._chatItems) &&
+      DeepCollectionEquality().equals(_users, other._users);
   }
-
+  
   @override
   int get hashCode => toString().hashCode;
-
+  
   @override
   String toString() {
     var buffer = new StringBuffer();
-
+    
     buffer.write("Chat {");
     buffer.write("id=" + "$id" + ", ");
-    buffer.write("receiverId=" + "$receiverId" + ", ");
-    buffer.write("senderId=" + "$senderId" + ", ");
-    buffer.write("createdOn=" +
-        (createdOn != null ? createdOn.format() : "null") +
-        ", ");
-    buffer.write(
-        "updatedOn=" + (updatedOn != null ? updatedOn.format() : "null"));
+    buffer.write("receiverId=" + "$_receiverId" + ", ");
+    buffer.write("senderId=" + "$_senderId" + ", ");
+    buffer.write("createdOn=" + (_createdOn != null ? _createdOn!.format() : "null") + ", ");
+    buffer.write("updatedOn=" + (_updatedOn != null ? _updatedOn!.format() : "null"));
     buffer.write("}");
-
+    
     return buffer.toString();
   }
-
-  Chat copyWith(
-      {String id,
-      String receiverId,
-      String senderId,
-      TemporalDateTime createdOn,
-      TemporalDateTime updatedOn,
-      List<ChatItem> chatItems,
-      List<UserChat> users}) {
+  
+  Chat copyWith({String? id, String? receiverId, String? senderId, TemporalDateTime? createdOn, TemporalDateTime? updatedOn, List<ChatItem>? chatItems, List<UserChat>? users}) {
     return Chat(
-        id: id ?? this.id,
-        receiverId: receiverId ?? this.receiverId,
-        senderId: senderId ?? this.senderId,
-        createdOn: createdOn ?? this.createdOn,
-        updatedOn: updatedOn ?? this.updatedOn,
-        chatItems: chatItems ?? this.chatItems,
-        users: users ?? this.users);
+      id: id ?? this.id,
+      receiverId: receiverId ?? this.receiverId,
+      senderId: senderId ?? this.senderId,
+      createdOn: createdOn ?? this.createdOn,
+      updatedOn: updatedOn ?? this.updatedOn,
+      chatItems: chatItems ?? this.chatItems,
+      users: users ?? this.users);
   }
-
-  Chat.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        receiverId = json['receiverId'],
-        senderId = json['senderId'],
-        createdOn = json['createdOn'] != null
-            ? TemporalDateTime.fromString(json['createdOn'])
-            : null,
-        updatedOn = json['updatedOn'] != null
-            ? TemporalDateTime.fromString(json['updatedOn'])
-            : null,
-        chatItems = json['chatItems'] is List
-            ? (json['chatItems'] as List)
-                .map((e) => ChatItem.fromJson(new Map<String, dynamic>.from(e)))
-                .toList()
-            : null,
-        users = json['users'] is List
-            ? (json['users'] as List)
-                .map((e) => UserChat.fromJson(new Map<String, dynamic>.from(e)))
-                .toList()
-            : null;
-
+  
+  Chat.fromJson(Map<String, dynamic> json)  
+    : id = json['id'],
+      _receiverId = json['receiverId'],
+      _senderId = json['senderId'],
+      _createdOn = json['createdOn'] != null ? TemporalDateTime.fromString(json['createdOn']) : null,
+      _updatedOn = json['updatedOn'] != null ? TemporalDateTime.fromString(json['updatedOn']) : null,
+      _chatItems = json['chatItems'] is List
+        ? (json['chatItems'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => ChatItem.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null,
+      _users = json['users'] is List
+        ? (json['users'] as List)
+          .where((e) => e?['serializedData'] != null)
+          .map((e) => UserChat.fromJson(new Map<String, dynamic>.from(e['serializedData'])))
+          .toList()
+        : null;
+  
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'receiverId': receiverId,
-        'senderId': senderId,
-        'createdOn': createdOn?.format(),
-        'updatedOn': updatedOn?.format(),
-        'chatItems': chatItems?.map((e) => e?.toJson())?.toList(),
-        'users': users?.map((e) => e?.toJson())?.toList()
-      };
+    'id': id, 'receiverId': _receiverId, 'senderId': _senderId, 'createdOn': _createdOn?.format(), 'updatedOn': _updatedOn?.format(), 'chatItems': _chatItems?.map((e) => e?.toJson())?.toList(), 'users': _users?.map((e) => e?.toJson())?.toList()
+  };
 
   static final QueryField ID = QueryField(fieldName: "chat.id");
   static final QueryField RECEIVERID = QueryField(fieldName: "receiverId");
@@ -160,66 +161,71 @@ class Chat extends Model {
   static final QueryField CREATEDON = QueryField(fieldName: "createdOn");
   static final QueryField UPDATEDON = QueryField(fieldName: "updatedOn");
   static final QueryField CHATITEMS = QueryField(
-      fieldName: "chatItems",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (ChatItem).toString()));
+    fieldName: "chatItems",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (ChatItem).toString()));
   static final QueryField USERS = QueryField(
-      fieldName: "users",
-      fieldType: ModelFieldType(ModelFieldTypeEnum.model,
-          ofModelName: (UserChat).toString()));
-  static var schema =
-      Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
+    fieldName: "users",
+    fieldType: ModelFieldType(ModelFieldTypeEnum.model, ofModelName: (UserChat).toString()));
+  static var schema = Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Chat";
     modelSchemaDefinition.pluralName = "Chats";
-
+    
     modelSchemaDefinition.authRules = [
-      AuthRule(authStrategy: AuthStrategy.PUBLIC, operations: [
-        ModelOperation.CREATE,
-        ModelOperation.UPDATE,
-        ModelOperation.DELETE,
-        ModelOperation.READ
-      ])
+      AuthRule(
+        authStrategy: AuthStrategy.PUBLIC,
+        operations: [
+          ModelOperation.CREATE,
+          ModelOperation.UPDATE,
+          ModelOperation.DELETE,
+          ModelOperation.READ
+        ])
     ];
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.id());
-
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Chat.RECEIVERID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: Chat.RECEIVERID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Chat.SENDERID,
-        isRequired: true,
-        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
-
+      key: Chat.SENDERID,
+      isRequired: true,
+      ofType: ModelFieldType(ModelFieldTypeEnum.string)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Chat.CREATEDON,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
-
+      key: Chat.CREATEDON,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Chat.UPDATEDON,
-        isRequired: false,
-        ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)));
-
+      key: Chat.UPDATEDON,
+      isRequired: false,
+      ofType: ModelFieldType(ModelFieldTypeEnum.dateTime)
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Chat.CHATITEMS,
-        isRequired: false,
-        ofModelName: (ChatItem).toString(),
-        associatedKey: ChatItem.CHATID));
-
+      key: Chat.CHATITEMS,
+      isRequired: false,
+      ofModelName: (ChatItem).toString(),
+      associatedKey: ChatItem.CHATID
+    ));
+    
     modelSchemaDefinition.addField(ModelFieldDefinition.hasMany(
-        key: Chat.USERS,
-        isRequired: false,
-        ofModelName: (UserChat).toString(),
-        associatedKey: UserChat.CHAT));
+      key: Chat.USERS,
+      isRequired: false,
+      ofModelName: (UserChat).toString(),
+      associatedKey: UserChat.CHAT
+    ));
   });
 }
 
 class _ChatModelType extends ModelType<Chat> {
   const _ChatModelType();
-
+  
   @override
   Chat fromJson(Map<String, dynamic> jsonData) {
     return Chat.fromJson(jsonData);

@@ -1,5 +1,5 @@
 /*
-* Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+* Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Licensed under the Apache License, Version 2.0 (the "License").
 * You may not use this file except in compliance with the License.
@@ -37,56 +37,40 @@ class ModelProvider implements ModelProviderInterface {
   @override
   String version = "1cabd7544fdf2df511c5100446484c1a";
   @override
-  List<ModelSchema> modelSchemas = [
-    Chat.schema,
-    ChatItem.schema,
-    Comment.schema,
-    Post.schema,
-    User.schema,
-    UserChat.schema
-  ];
+  List<ModelSchema> modelSchemas = [Chat.schema, ChatItem.schema, Comment.schema, Post.schema, User.schema, UserChat.schema];
   static final ModelProvider _instance = ModelProvider();
 
   static ModelProvider get instance => _instance;
-
+  
   ModelType getModelTypeByModelName(String modelName) {
-    switch (modelName) {
-      case "Chat":
-        {
-          return Chat.classType;
-        }
-        break;
-      case "ChatItem":
-        {
-          return ChatItem.classType;
-        }
-        break;
-      case "Comment":
-        {
-          return Comment.classType;
-        }
-        break;
-      case "Post":
-        {
-          return Post.classType;
-        }
-        break;
-      case "User":
-        {
-          return User.classType;
-        }
-        break;
-      case "UserChat":
-        {
-          return UserChat.classType;
-        }
-        break;
-      default:
-        {
-          throw Exception(
-              "Failed to find model in model provider for model name: " +
-                  modelName);
-        }
+    switch(modelName) {
+    case "Chat": {
+    return Chat.classType;
+    }
+    break;
+    case "ChatItem": {
+    return ChatItem.classType;
+    }
+    break;
+    case "Comment": {
+    return Comment.classType;
+    }
+    break;
+    case "Post": {
+    return Post.classType;
+    }
+    break;
+    case "User": {
+    return User.classType;
+    }
+    break;
+    case "UserChat": {
+    return UserChat.classType;
+    }
+    break;
+    default: {
+    throw Exception("Failed to find model in model provider for model name: " + modelName);
+    }
     }
   }
 }

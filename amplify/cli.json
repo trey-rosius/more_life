@@ -23,6 +23,7 @@
             "cleangeneratedmodelsdirectory": true,
             "retaincasestyle": true,
             "addtimestampfields": true,
+            "enableDartNullSafety": true,
             "handlelistnullabilitytransparently": true
         },
         "appsync": {

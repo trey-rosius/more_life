@@ -22,11 +22,11 @@ class ProfileRepository extends ChangeNotifier {
   final lastNamesController = TextEditingController();
 
 
-  S3UploadFileOptions options;
+  S3UploadFileOptions? options;
   bool _loading = false;
-  String _userId;
-  String _username;
-  String _email;
+  String _userId='';
+  String _username='';
+  String _email='';
   bool _logout = false;
 
   String get email => _email;
@@ -112,7 +112,7 @@ class ProfileRepository extends ChangeNotifier {
     loading = true;
     var uuid =  Uuid().v1();
 
-    File croppedFile = await ImageCropper.cropImage(
+    File? croppedFile = await ImageCropper.cropImage(
         sourcePath: imageFilePath,
         cropStyle: CropStyle.circle,
         aspectRatioPresets: Platform.isAndroid
@@ -224,7 +224,7 @@ Future<User>getUserProfile(String userId) async{
 
     firstNamesController.text = user[0].firstName;
     lastNamesController.text = user[0].lastName;
-    profilePic =user[0].profilePicUrl;
+    profilePic =user[0].profilePicUrl!;
 
 
     return user[0];

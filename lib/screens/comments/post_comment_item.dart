@@ -1,7 +1,7 @@
 import 'package:amp_auth/models/Post.dart';
 import 'package:amp_auth/models/User.dart';
 import 'package:amp_auth/repository/profile_repository.dart';
-import 'package:amp_auth/screens/comments/post_list_item.dart';
+
 import 'package:amp_auth/utils/app_theme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +22,11 @@ class PostCommentItem extends StatelessWidget{
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            FutureProvider.value(value: ProfileRepository.instance().getUserProfile(post.userID),
+            FutureProvider.value(value: ProfileRepository.instance().getUserProfile(post.userID!),
                 catchError: (context,error){
                   print(error);
-                },child: Consumer(builder: (_,User user,child){
+                },initialData: null,
+                child: Consumer(builder: (_,User? user,child){
                   if(user != null){
                     return  Container(
 
@@ -73,7 +74,7 @@ class PostCommentItem extends StatelessWidget{
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(user.username,style: TextStyle(fontSize: 16,color: Colors.white)),
-                              Text(timeago.format(post.createdOn.getDateTimeInUtc()),style: TextStyle(color: Colors.grey),)
+                              Text(timeago.format(post.createdOn!.getDateTimeInUtc()),style: TextStyle(color: Colors.grey),)
                             ],
                           )
                         ],

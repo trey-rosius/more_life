@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 class CommentsScreen extends StatefulWidget {
-     CommentsScreen({this.userId,this.post});
+     CommentsScreen({required this.userId,required this.post});
      final String userId;
      final Post post;
   @override
@@ -139,7 +139,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
             catchError: (context,error){
             print(error.toString());
             },
-            child: Consumer(builder: (key,List<Comment> commentList, child){
+            initialData: [],
+            child: Consumer(builder: (key,List<Comment>? commentList, child){
                 if(commentList != null){
                  print("in here"+commentList.toString());
                   return Flexible(
@@ -154,10 +155,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
                               padding: EdgeInsets.all(20),
                               child: Column(
                                 children: [
-                                  FutureProvider.value(value: ProfileRepository.instance().getUserProfile(widget.post.userID),
+                                  FutureProvider.value(value: ProfileRepository.instance().getUserProfile(widget.post.userID!),
                                       catchError: (context,error){
                                         print(error);
-                                      },child: Consumer(builder: (_,User user,child){
+                                      },initialData: null,
+                                      child: Consumer(builder: (_,User? user,child){
                                         if(user != null){
                                           return  Container(
 
@@ -205,7 +207,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(user.username,style: TextStyle(fontSize: 16,color: Colors.white)),
-                                                    Text(timeago.format(widget.post.createdOn.getDateTimeInUtc()),style: TextStyle(color: Colors.grey),)
+                                                    Text(timeago.format(widget.post.createdOn!.getDateTimeInUtc()),style: TextStyle(color: Colors.grey),)
                                                   ],
                                                 )
                                               ],

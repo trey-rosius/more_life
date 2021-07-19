@@ -73,13 +73,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(color: ThemeColor.white),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -91,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -124,13 +124,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 style: TextStyle(color: ThemeColor.white),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color:(Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -142,7 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: TextButton(
 
                                 onPressed: () {
-                                  if (_formKey.currentState.validate()) {
+                                  if (_formKey.currentState!.validate()) {
                                     loginRep.login().then((bool isSignedIn){
                                       if(isSignedIn) {
                                         print("signed In");

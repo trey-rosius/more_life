@@ -26,10 +26,11 @@ class PostItem extends StatelessWidget {
           padding: EdgeInsets.all(20),
           child: Column(
             children: [
-      FutureProvider.value(value: ProfileRepository.instance().getUserProfile(post.userID),
+      FutureProvider.value(value: ProfileRepository.instance().getUserProfile(post.userID!),
       catchError: (context,error){
       print(error);
-      },child: Consumer(builder: (_,User user,child){
+      },initialData: null,
+      child: Consumer(builder: (_,User? user,child){
          if(user != null){
            return  Container(
 
@@ -77,7 +78,7 @@ class PostItem extends StatelessWidget {
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
                      Text(user.username,style: TextStyle(fontSize: 16,color: Colors.white)),
-                     Text(timeago.format(post.createdOn.getDateTimeInUtc()),style: TextStyle(color: Colors.grey),)
+                     Text(timeago.format(post.createdOn!.getDateTimeInUtc()),style: TextStyle(color: Colors.grey),)
                    ],
                  )
                ],
@@ -151,7 +152,7 @@ class PostItem extends StatelessWidget {
                       child: Container(
                         padding:EdgeInsets.all(15),
                         margin: EdgeInsets.all(10),
-                        width: SizeConfig.screenWidth/2.5,
+                        width: SizeConfig.screenWidth!/2.5,
 
 
                         decoration: BoxDecoration(

@@ -58,13 +58,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 style: TextStyle(color: ThemeColor.white),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -76,7 +76,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -109,13 +109,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 style: TextStyle(color: ThemeColor.white),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -127,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -143,7 +143,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                validator: (value) =>  Validations.validateEmail(value),
+                                validator: (value) =>  Validations.validateEmail(value!),
                               ),
                             ),
                             Container(
@@ -154,13 +154,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 style: TextStyle(color: ThemeColor.white),
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -172,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                                   ),
                                   disabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey[700], width: 2.toWidth),
+                                    borderSide: BorderSide(color: (Colors.grey[700])!, width: 2.toWidth),
                                     borderRadius: BorderRadius.all(
                                       Radius.circular(10.toWidth),
                                     ),
@@ -188,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                validator: (value) =>  Validations.validatePassword(value)
+                                validator: (value) =>  Validations.validatePassword(value!)
                               ),
                             ),
 
@@ -213,8 +213,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderRadius: BorderRadius.all(Radius.circular(10.0)),
                               ),
                               child: TextButton(child: Text("Register",style: TextStyle(color: Colors.white,fontSize: 20),),onPressed: (){
-                                if (_formKey.currentState.validate()) {
-                                 loginRepo.register(context).then((bool value){
+                                if (_formKey.currentState!.validate()) {
+                                 loginRepo.register(context).then((bool? value){
 
                                     if(loginRepo.isSignUpComplete) {
                                       Navigator.push(context, MaterialPageRoute(builder: (context){

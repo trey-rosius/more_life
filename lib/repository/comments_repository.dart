@@ -16,7 +16,7 @@ import 'package:uuid/uuid.dart';
 
 class CommentsRepository extends ChangeNotifier {
 
-  CommentsRepository.instance();
+   CommentsRepository.instance();
 
 
 
@@ -24,14 +24,14 @@ class CommentsRepository extends ChangeNotifier {
 
 
 
-  S3UploadFileOptions options;
+  S3UploadFileOptions? options;
   bool _loading = false;
-  String _userId;
+  String? _userId;
 
 
-  String get userId => _userId;
+  String? get userId => _userId;
 
-  set userId(String value) {
+   set userId(String? value) {
     _userId = value;
     notifyListeners();
   }

@@ -29,7 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           FutureProvider.value(value: ProfileRepository.instance().getUserProfile(widget.userId),
           catchError: (context,error){
             print(error);
-          },child: Consumer(builder: (_,User user,child){
+          },initialData: null,
+          child: Consumer(builder: (_,User? user,child){
             if(user != null){
               return SliverToBoxAdapter(
                 child: Container(
@@ -53,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   width: 120.0,
                                   height: 120.0,
                                   fit: BoxFit.cover,
-                                  imageUrl: user.profilePicUrl,
+                                  imageUrl: user.profilePicUrl!,
                                   placeholder: (context,
                                       url) =>
                                       CircularProgressIndicator(),
@@ -101,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text("Created ",style: TextStyle(color: ThemeColor.white),),
-                                  Text(timeago.format(user.createdOn.getDateTimeInUtc()),style: TextStyle(color: ThemeColor.white),)
+                                  Text(timeago.format(user.createdOn!.getDateTimeInUtc()),style: TextStyle(color: ThemeColor.white),)
                                 ],
                               ),
                             )
@@ -125,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Container(
                     height: 50.toHeight,
-                    width: SizeConfig.screenWidth/2.5,
+                    width: SizeConfig.screenWidth!/2.5,
                     child: ElevatedButton(
                       style: ButtonStyle(
 
@@ -148,7 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   Container(
                     height: 50.toHeight,
-                    width: SizeConfig.screenWidth/2.5,
+                    width: SizeConfig.screenWidth!/2.5,
                     child: ElevatedButton(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(ThemeColor.primary),
@@ -243,7 +244,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           catchError: (context,error){
             print(error.toString());
-          },child: Consumer(builder: (_,List<Post> postsList,child){
+          },initialData: [],
+          child: Consumer(builder: (_,List<Post>? postsList,child){
             if(postsList == null){
               return SliverToBoxAdapter(
                 child: CircularProgressIndicator(),
